@@ -1,4 +1,14 @@
 
+## DCache 体验版本
+此分支作为 DCache 体验版本， 功能如下：
+
+    1、Dcache基础服务安装 opt、config、property
+    2、Dcache 服务发布包上传
+    3、应用的创建与部署
+    4、模块的创建与部署
+    5、服务配置管理
+    6、服务状态查看
+
 ## Tars web service
  
  Tars web service 是 [TARS](https://github.com/TarsCloud/Tars) 框架服务的管理平台。

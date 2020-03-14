@@ -14,24 +14,18 @@
  * specific language governing permissions and limitations under the License.
  */
 
-const logger = require('../../logger');
-const TreeService = require('../../service/server/TreeService');
-const AdminService = require('../../service/admin/AdminService');
-const _ = require('lodash');
-const util = require('../../tools/util');
-const AuthService = require('../../service/auth/AuthService');
+// const limit = require('koa-limit');
+const loginConf = require('../../config/loginConf');
 
-const TreeController = {};
+module.exports = () => {
+	
+	return async (ctx, next) => {
+		let uid = await loginConf.getUidByTicket(ctx, ctx.query['ticket']);
 
-TreeController.listTree = async (ctx) => {
-	console.log('getTreeNodes', ctx);
-
-	try {
-		ctx.makeResObj(200, '', await TreeService.getTreeNodes(ctx.uid));
-	} catch (e) {
-		logger.error('[listTree]', e, ctx);
-		ctx.makeErrResObj();
-	}
+		if(uid != null) {
+			await next();
+		} else {
+			ctx.body = {data: {}, ret_code: 403, err_msg: 'not auth'};
+		}
+	};
 };
-
-module.exports = TreeController;

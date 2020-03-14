@@ -479,6 +479,12 @@ export default {
         this.pageNum = curr_page;
         this.total = Math.ceil(data.count/this.pageSize);
         this.serverNotifyList = data.rows;
+
+        var that = this;
+        setTimeout(function() {
+          that.getServerNotifyList();
+        }, 1000);
+
       }).catch((err) => {
         loading.hide();
         this.$tip.error(`${this.$t('serverList.restart.failed')}: ${err.err_msg || err.message}`);
@@ -901,7 +907,6 @@ export default {
     this.getServerList();
     this.getServerNotifyList(1);
   },
-
   linkDownload (url) {
       window.open(url,'_blank') // 新窗口打开外链接
   }

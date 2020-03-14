@@ -1,7 +1,7 @@
 /* jshint indent: 1 */
 
 module.exports = function(sequelize, DataTypes) {
-	return sequelize.define('t_user_info', {
+	return sequelize.define('t_token', {
 		id: {
 			type: DataTypes.INTEGER(11),
 			allowNull: false,
@@ -13,16 +13,24 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: true,
 			unique: true
 		},
-		password: {
+		token: {
 			type: DataTypes.STRING(256),
 			allowNull: false
+		},
+		valid: {
+			type: DataTypes.INTEGER(11),
+			allowNull: false
+		},
+		expire_time: {
+			type: DataTypes.DATE,
+			allowNull: false			
 		},
 		update_time: {
 			type: DataTypes.DATE,
 			allowNull: false			
 		}
 	}, {
-		tableName: 't_user_info',
+		tableName: 't_token',
 		timestamps: false
 	});
 };

@@ -44,34 +44,36 @@
           @keydown.enter="register"
         ></let-input>
       </let-form-item>
-
       <let-button type="submit" theme="primary">{{$t('login.register')}}</let-button>
-      <let-button type="button" @click.prevent="toLoginPage" style="float:right;margin-right:12px;">{{$t('login.toLoginPage')}}</let-button>
+      <let-button
+        type="button"
+        @click.prevent="toLoginPage"
+        style="float:right;margin-right:12px;"
+      >{{$t('login.toLoginPage')}}</let-button>
     </let-form>
-
   </div>
 </template>
 
 <script>
-import localeSelect from '../../components/locale-select.vue';
+import localeSelect from "../../components/locale-select.vue";
 export default {
-  name: 'login_page',
+  name: "login_page",
 
   data() {
     return {
-      uid: '',
-      password: '',
-      repeatPassword: ''
+      uid: "",
+      password: "",
+      repeatPassword: ""
     };
   },
   computed: {
-    redirectUrl(){
-      var key = 'redirect_url=';
+    redirectUrl() {
+      var key = "redirect_url=";
       var idx = location.search.indexOf(key);
-      if(idx > -1){
+      if (idx > -1) {
         return decodeURIComponent(location.search.substring(idx + key.length));
-      }else{
-        return '/';
+      } else {
+        return "/";
       }
     }
   },
@@ -80,52 +82,62 @@ export default {
   },
   methods: {
     register() {
-        if(!this.$refs.form.validate()){
-          return;
-        }
-        if(!this.checkRepeatPwdValid()){
-           this.$tip.error(`${this.$t('login.passwordDiff')}`);
-           return;
-        }
-        const loading = this.$Loading.show();
-        this.$ajax.postJSON('/api/register',  {uid: this.uid, password: this.password, repeat_password: this.repeatPassword}).then((data)=>{
-            loading.hide();
-            this.$tip.success(`${this.$t('login.registerSucc')}`);
-            setTimeout(()=>{
-              this.toLoginPage();
-            }, 1000);
-        }).catch((err)=>{
-            loading.hide();
-            this.$tip.error(`${this.$t('login.registerFailed')}: ${err.err_msg || err.message}`);
+      if (!this.$refs.form.validate()) {
+        return;
+      }
+      if (!this.checkRepeatPwdValid()) {
+        this.$tip.error(`${this.$t("login.passwordDiff")}`);
+        return;
+      }
+      const loading = this.$Loading.show();
+      this.$ajax
+        .postJSON("/api/register", {
+          uid: this.uid,
+          password: this.password,
+          repeat_password: this.repeatPassword
         })
+        .then(data => {
+          loading.hide();
+          this.$tip.success(`${this.$t("login.registerSucc")}`);
+          setTimeout(() => {
+            this.toLoginPage();
+          }, 1000);
+        })
+        .catch(err => {
+          loading.hide();
+          this.$tip.error(
+            `${this.$t("login.registerFailed")}: ${err.err_msg || err.message}`
+          );
+        });
     },
-    checkRepeatPwdValid(){
+    checkRepeatPwdValid() {
       return this.repeatPassword === this.password;
     },
-    toLoginPage(){
-      location.href="/login.html?redirect_url=" + encodeURIComponent(this.redirectUrl);
+    toLoginPage() {
+      location.href =
+        "/login.html?redirect_url=" + encodeURIComponent(this.redirectUrl);
     }
-  },
+  }
 };
 </script>
 <style>
-  @import "../../assets/font/lato/Lato.css";
-  @import '../../assets/css/reset.css';
-  @import '../../assets/css/variable.css';
-  .top-title{
-    margin: 16px 0;
-    line-height: 2.5;
-    font-size: 18px;
-    border-bottom: 1px solid #c5d9e8;
-    position:relative;
-  }
-  .login_page{
-    width: 450px;
-    margin: 100px auto;
-  }
-  .locale-wrap{
-    position:absolute;
-    right: 10px;
-    top: -5px;
-  }
+@import "../../assets/font/lato/Lato.css";
+@import "../../assets/css/reset.css";
+@import "../../assets/css/variable.css";
+.top-title {
+  margin: 16px 0;
+  line-height: 2.5;
+  font-size: 18px;
+  border-bottom: 1px solid #c5d9e8;
+  position: relative;
+}
+.login_page {
+  width: 450px;
+  margin: 100px auto;
+}
+.locale-wrap {
+  position: absolute;
+  right: 10px;
+  top: -5px;
+}
 </style>

@@ -5,19 +5,22 @@
       {{ this.$t("serverList.title.serverList") }}
       <i class="icon iconfont el-icon-third-shuaxin" @click="getServerList"></i>
     </h4>
-    <let-table
+
+    <el-table
       v-if="serverList"
       :data="serverList"
       :empty-msg="$t('common.nodata')"
       stripe
+      border
       ref="serverListLoading"
     >
-      <let-table-column
-        :title="$t('serverList.table.th.service')"
+      <el-table-column
+        :label="$t('serverList.table.th.service')"
         prop="server_name"
       >
         <template slot-scope="scope">
-          <a
+          <el-link
+            type="primary"
             :href="
               '/static/logview/logview.html?app=' +
                 [scope.row.application] +
@@ -29,16 +32,16 @@
             title="点击查看服务日志(view server logs)"
             target="_blank"
             class="buttonText"
-            >{{ scope.row.server_name }}</a
+            >{{ scope.row.server_name }}</el-link
           >
         </template>
-      </let-table-column>
-      <let-table-column
-        :title="$t('serverList.table.th.ip')"
+      </el-table-column>
+      <el-table-column
+        :label="$t('serverList.table.th.ip')"
         prop="node_name"
-        width="140px"
-      ></let-table-column>
-      <let-table-column :title="$t('serverList.table.th.enableSet')">
+        width="140"
+      ></el-table-column>
+      <el-table-column :label="$t('serverList.table.th.enableSet')">
         <template slot-scope="scope">
           <span v-if="!scope.row.enable_set">{{ $t("common.disable") }}</span>
           <p v-else style="max-width: 200px">
@@ -49,10 +52,10 @@
             {{ $t("common.set.setGroup") }}：{{ scope.row.set_group }}
           </p>
         </template>
-      </let-table-column>
-      <let-table-column
-        :title="$t('serverList.table.th.configStatus')"
-        width="90px"
+      </el-table-column>
+      <el-table-column
+        :label="$t('serverList.table.th.configStatus')"
+        width="90"
       >
         <template slot-scope="scope">
           <span
@@ -63,11 +66,8 @@
             "
           ></span>
         </template>
-      </let-table-column>
-      <let-table-column
-        :title="$t('serverList.table.th.currStatus')"
-        width="65px"
-      >
+      </el-table-column>
+      <el-table-column :label="$t('serverList.table.th.currStatus')" width="90">
         <template slot-scope="scope">
           <span
             :class="
@@ -79,84 +79,87 @@
             "
           ></span>
         </template>
-      </let-table-column>
-      <let-table-column
-        :title="$t('serverList.table.th.processID')"
+      </el-table-column>
+      <el-table-column
+        :label="$t('serverList.table.th.processID')"
         prop="process_id"
-        width="80px"
-      ></let-table-column>
-      <let-table-column
-        :title="$t('serverList.table.th.version')"
+        width="80"
+      ></el-table-column>
+      <el-table-column
+        :label="$t('serverList.table.th.version')"
         prop="patch_version"
-        width="68px"
-      ></let-table-column>
-      <let-table-column :title="$t('serverList.table.th.time')">
+        width="68"
+      ></el-table-column>
+      <el-table-column :label="$t('serverList.table.th.time')">
         <template slot-scope="scope">
           <span style="word-break: break-word">{{
             handleNoPublishedTime(scope.row.patch_time)
           }}</span>
         </template>
-      </let-table-column>
-      <let-table-column :title="$t('operate.operates')" width="260px">
+      </el-table-column>
+      <el-table-column :label="$t('operate.operates')" width="260">
         <template slot-scope="scope">
-          <let-table-operation @click="configServer(scope.row.id)">{{
+          <el-link @click="configServer(scope.row.id)" type="primary">{{
             $t("operate.update")
-          }}</let-table-operation>
-          <let-table-operation @click="restartServer(scope.row.id)">{{
+          }}</el-link>
+
+          <el-link type="primary" @click="restartServer(scope.row.id)">{{
             $t("operate.restart")
-          }}</let-table-operation>
-          <let-table-operation
-            class="danger"
-            @click="stopServer(scope.row.id)"
-            >{{ $t("operate.stop") }}</let-table-operation
-          >
-          <let-table-operation @click="manageServant(scope.row)">{{
+          }}</el-link>
+          <el-link type="danger" @click="stopServer(scope.row.id)">{{
+            $t("operate.stop")
+          }}</el-link>
+          <el-link type="primary" @click="manageServant(scope.row)">{{
             $t("operate.servant")
-          }}</let-table-operation>
-          <let-table-operation @click="showMoreCmd(scope.row)">{{
+          }}</el-link>
+          <el-link type="primary" @click="showMoreCmd(scope.row)">{{
             $t("operate.more")
-          }}</let-table-operation>
+          }}</el-link>
         </template>
-      </let-table-column>
-    </let-table>
+      </el-table-column>
+    </el-table>
+    <br />
+
     <!-- 服务实时状态 -->
     <h4 v-if="serverNotifyList && showOthers">
       {{ this.$t("serverList.title.serverStatus") }}
       <i class="icon iconfont" @click="getServerNotifyList()">&#xec08;</i>
     </h4>
-    <let-table
+    <el-table
       v-if="serverNotifyList && showOthers"
       :data="serverNotifyList"
       stripe
+      border
       :empty-msg="$t('common.nodata')"
       ref="serverNotifyListLoading"
     >
-      <let-table-column
-        width="20%"
-        :title="$t('common.time')"
+      <el-table-column
+        min-width="20%"
+        :label="$t('common.time')"
         prop="notifytime"
-      ></let-table-column>
-      <let-table-column
-        width="20%"
-        :title="$t('serverList.table.th.serviceID')"
+      ></el-table-column>
+      <el-table-column
+        min-width="28%"
+        :label="$t('serverList.table.th.serviceID')"
         prop="server_id"
-      ></let-table-column>
-      <let-table-column
-        width="15%"
-        :title="$t('serverList.table.th.threadID')"
+      ></el-table-column>
+      <el-table-column
+        min-width="15%"
+        :label="$t('serverList.table.th.threadID')"
         prop="thread_id"
-      ></let-table-column>
-      <let-table-column
-        :title="$t('serverList.table.th.result')"
+      ></el-table-column>
+      <el-table-column
+        :label="$t('serverList.table.th.result')"
         prop="result"
-      ></let-table-column>
-    </let-table>
-    <let-pagination
+      ></el-table-column>
+    </el-table>
+
+    <el-pagination
       :page="pageNum"
       @change="gotoPage"
       style="margin-bottom: 32px;"
       :total="total"
-    ></let-pagination>
+    ></el-pagination>
     <!-- 编辑服务弹窗 -->
     <let-modal
       v-model="configModal.show"
@@ -623,7 +626,7 @@ export default {
 
       // 操作历史列表
       serverNotifyList: [],
-      getServerNotifyListTimer:0,
+      getServerNotifyListTimer: 0,
       pageNum: 1,
       pageSize: 20,
       total: 1,
@@ -707,24 +710,29 @@ export default {
     getServerNotifyList(curr_page) {
       if (!this.showOthers) return;
       // const loading = this.$refs.serverNotifyListLoading.$loading.show();
-      if(!curr_page) {
-        curr_page = this.pageNum || 1; 
+      if (!curr_page) {
+        curr_page = this.pageNum || 1;
       }
-      this.$ajax.getJSON('/server/api/server_notify_list', {
-        tree_node_id: this.$route.params.treeid,
-        page_size: this.pageSize,
-        curr_page: curr_page,
-      }).then((data) => {
-        // loading.hide();
-        this.pageNum = curr_page;
-        this.total = Math.ceil(data.count/this.pageSize);
-        this.serverNotifyList = data.rows;
-        var that = this;
-
-      }).catch((err) => {
-        // loading.hide();
-        this.$tip.error(`${this.$t('serverList.restart.failed')}: ${err.err_msg || err.message}`);
-      });
+      this.$ajax
+        .getJSON("/server/api/server_notify_list", {
+          tree_node_id: this.$route.params.treeid,
+          page_size: this.pageSize,
+          curr_page: curr_page
+        })
+        .then(data => {
+          // loading.hide();
+          this.pageNum = curr_page;
+          this.total = Math.ceil(data.count / this.pageSize);
+          this.serverNotifyList = data.rows;
+          var that = this;
+        })
+        .catch(err => {
+          // loading.hide();
+          this.$tip.error(
+            `${this.$t("serverList.restart.failed")}: ${err.err_msg ||
+              err.message}`
+          );
+        });
     },
     // 切换服务实时状态页码
     gotoPage(num) {
@@ -1246,10 +1254,10 @@ export default {
     this.getServerList();
     this.getServerNotifyList(1);
     //同时只更新一个
-    if(window.__GET_NOTIFY_TIMER){
-      clearTimeout(window.__GET_NOTIFY_TIMER)
+    if (window.__GET_NOTIFY_TIMER) {
+      clearTimeout(window.__GET_NOTIFY_TIMER);
     }
-    window.__GET_NOTIFY_TIMER = setInterval(()=>{
+    window.__GET_NOTIFY_TIMER = setInterval(() => {
       this.getServerNotifyList();
     }, 1000);
   },
@@ -1260,8 +1268,11 @@ export default {
 </script>
 
 <style lang="postcss">
-@import '../../assets/css/variable.css';
+@import "../../assets/css/variable.css";
 
+td .el-link--inner {
+  margin-right: 10px;
+}
 .page_server_manage {
   .tbm16 {
     margin: 16px 0;

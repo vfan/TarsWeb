@@ -10,13 +10,6 @@
       @node-click="selectTree"
     ></el-tree>
 
-    <let-tree
-      class="left-tree"
-      v-if="false"
-      :data="treeData"
-      :activeKey="$route.params.treeid"
-      @on-select="selectTree"
-    />
     <div class="left-tree" v-if="treeData && !treeData.length">
       <p class="loading">{{ $t("common.noService") }}</p>
     </div>
@@ -37,19 +30,19 @@
     </div>
 
     <div class="right-view" v-else>
-      <let-tabs @click="clickTab" :activekey="$route.path">
-        <let-tab-pane
-          :tabkey="base + '/manage'"
-          :tab="$t('header.tab.tab1')"
-        ></let-tab-pane>
-        <let-tab-pane
-          :tabkey="base + '/publish'"
-          :tab="$t('index.rightView.tab.patch')"
+      <el-tabs @tab-click="clickTab" :value="$route.path">
+        <el-tab-pane
+          :name="base + '/manage'"
+          :label="$t('header.tab.tab1')"
+        ></el-tab-pane>
+        <el-tab-pane
+          :name="base + '/publish'"
+          :label="$t('index.rightView.tab.patch')"
           v-if="serverData.level === 5"
-        ></let-tab-pane>
-        <let-tab-pane
-          :tabkey="base + '/config'"
-          :tab="
+        ></el-tab-pane>
+        <el-tab-pane
+          :name="base + '/config'"
+          :label="
             serverData.level === 5
               ? $t('index.rightView.tab.serviceConfig')
               : serverData.level === 4
@@ -63,28 +56,28 @@
               serverData.level === 4 ||
               serverData.level === 1
           "
-        ></let-tab-pane>
-        <let-tab-pane
-          :tabkey="base + '/server-monitor'"
-          :tab="$t('index.rightView.tab.statMonitor')"
+        ></el-tab-pane>
+        <el-tab-pane
+          :name="base + '/server-monitor'"
+          :label="$t('index.rightView.tab.statMonitor')"
           v-if="serverData.level === 5"
-        ></let-tab-pane>
-        <let-tab-pane
-          :tabkey="base + '/property-monitor'"
-          :tab="$t('index.rightView.tab.propertyMonitor')"
+        ></el-tab-pane>
+        <el-tab-pane
+          :name="base + '/property-monitor'"
+          :label="$t('index.rightView.tab.propertyMonitor')"
           v-if="serverData.level === 5"
-        ></let-tab-pane>
-        <let-tab-pane
-          :tabkey="base + '/interface-debuger'"
-          :tab="$t('index.rightView.tab.infDebuger')"
+        ></el-tab-pane>
+        <el-tab-pane
+          :name="base + '/interface-debuger'"
+          :label="$t('index.rightView.tab.infDebuger')"
           v-if="serverData.level === 5"
-        ></let-tab-pane>
-        <let-tab-pane
-          :tabkey="base + '/user-manage'"
-          :tab="$t('index.rightView.tab.privileage')"
+        ></el-tab-pane>
+        <el-tab-pane
+          :name="base + '/user-manage'"
+          :label="$t('index.rightView.tab.privileage')"
           v-if="serverData.level === 5 && enableAuth"
-        ></let-tab-pane>
-      </let-tabs>
+        ></el-tab-pane>
+      </el-tabs>
 
       <router-view
         ref="childView"
@@ -226,7 +219,8 @@ export default {
       return serverData;
     },
 
-    clickTab(tabkey) {
+    clickTab(tabItem) {
+      const tabkey = tabItem.name;
       this.$router.push(
         Object.assign({}, this.$route, {
           path: tabkey

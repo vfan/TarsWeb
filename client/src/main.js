@@ -22,6 +22,7 @@ import "./plugins/ajax";
 import App from "./App";
 import router from "./router";
 import { i18n, loadLang } from "./locale/i18n";
+import "./style/element-variables.scss";
 
 import "./assets/icon-font/iconfont.css";
 

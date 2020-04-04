@@ -1,8 +1,16 @@
 {
-  "extends": [
-    "airbnb"
-  ],
+  "extends": "eslint:recommended",
   "plugins": [],
   "parser": "babel-eslint",
-  "rules": {}
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [["@", "./src/"]],
+        "extensions": [".ts", ".js", ".jsx", ".json", ".vue"]
+      }
+    }
+  },
+  "rules": {
+    // "import/no-unresolved": "off"
+  }
 }

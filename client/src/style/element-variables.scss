@@ -2,7 +2,7 @@
 $--color-primary: #409eff;
 
 /* 改变 icon 字体路径变量，必需 */
-$--font-path: "~element-ui/lib/theme-chalk/fonts";
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
 
 .el-table .cell {
   padding-right: 0px;
@@ -15,8 +15,17 @@ $--font-path: "~element-ui/lib/theme-chalk/fonts";
 .el-table td .cell {
   padding-right: 0px !important;
 }
-.el-link--inner {
+.el-link--inner,
+.el-form-item__label,
+.el-input,
+.el-textarea,
+.el-radio,
+.el-form {
   font-size: 12px !important;
 }
 
-@import "~element-ui/packages/theme-chalk/src/index";
+@import '~element-ui/packages/theme-chalk/src/index';
+
+.el-form-item__label {
+  font-weight: bold;
+}

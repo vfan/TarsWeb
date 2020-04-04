@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /**
  * Tencent is pleased to support the open source community by making Tars available.
  *
@@ -14,92 +15,125 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import Vue from "vue";
+import Vue from 'vue'
 
-import letUI from "let-ui";
-import "let-ui/lib/lib.min.css";
-import VueCookie from "vue-cookie";
+import letUI from 'let-ui'
+import 'let-ui/lib/lib.min.css'
+import VueCookie from 'vue-cookie'
 
-import "@/assets/css/let-ui.css";
-import Icon from "@/components/icon";
-import TarsFormItem from "@/components/tars-form-item";
-import cn from "let-ui/lib/locale/lang/zh-CN.min";
-import en from "let-ui/lib/locale/lang/en-US.min";
+import '@/assets/css/let-ui.css'
+import Icon from '@/components/icon'
+import TarsFormItem from '@/components/tars-form-item'
+import cn from 'let-ui/lib/locale/lang/zh-CN.min'
+import en from 'let-ui/lib/locale/lang/en-US.min'
 
-Vue.use(letUI, { locale: { en, cn }[VueCookie.get("locale") || "cn"] || cn });
-Vue.component(Icon.name, Icon);
-Vue.component(TarsFormItem.name, TarsFormItem);
+import { Loading as ELoading } from 'element-ui'
 
-import ElementUI from "element-ui";
-import "element-ui/lib/theme-chalk/index.css";
-Vue.use(ElementUI);
+Vue.use(letUI, { locale: { en, cn }[VueCookie.get('locale') || 'cn'] || cn })
+Vue.component(Icon.name, Icon)
+Vue.component(TarsFormItem.name, TarsFormItem)
+
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+Vue.use(ElementUI)
 
 /* eslint-disable no-underscore-dangle */
-const LetUILoading = Vue.prototype.$Loading;
+const LetUILoading = Vue.prototype.$Loading
 
 function Loading(el) {
-  this.el = el;
-  this.loading = null;
+  this.el = el
+  this.loading = null
 }
 
 Loading.prototype.show = function show(selector, options) {
-  if (typeof selector === "object") {
-    options = selector;
-    selector = null;
+  if (typeof selector === 'object') {
+    options = selector
+    selector = null
   }
   if (this.loading) {
-    this.hide();
+    this.hide()
   }
-  const el = this.el;
-  const loading = LetUILoading({
-    fullScreen: !el,
+  const el = this.el
+  // const loading = LetUILoading({
+  //   fullScreen: !el,
+  //   target: el && selector ? el.querySelector(selector) : el,
+  //   boxClass: "loading-inner",
+  //   background: "rgba(0,0,0,0)",
+  //   color: "#fff",
+  //   size: 24,
+  //   ...options
+  // });
+
+  const loading = ELoading.service({
+    fullscreen: !el,
     target: el && selector ? el.querySelector(selector) : el,
-    boxClass: "loading-inner",
-    background: "rgba(0,0,0,0)",
-    color: "#fff",
+    boxClass: 'loading-inner',
+    background: 'rgba(0,0,0,0)',
+    color: '#fff',
     size: 24,
-    ...options
-  });
-  loading.show();
-  this.loading = loading;
-  return this;
-};
+    ...options,
+  })
+  // loading.show();
+  this.loading = loading
+  return this
+}
 
 Loading.prototype.hide = function hide() {
   if (this.loading) {
-    this.loading.hide();
-    this.loading = null;
+    // this.loading.hide();
+    this.loading.close()
+    this.loading = null
   }
-  return this;
-};
+  return this
+}
 
 Loading.show = function show(...args) {
   if (!Loading._loading) {
-    Loading._loading = new Loading();
+    Loading._loading = new Loading()
   }
-  return Loading._loading.show(...args);
-};
+  return Loading.loading
+  // return Loading._loading.show(...args);
+}
 
 Loading.hide = function hide() {
   if (!Loading._loading) {
-    Loading._loading = new Loading();
+    Loading._loading = new Loading()
   }
-  return Loading._loading.hide();
-};
+  return Loading._loading.hide()
+}
 
-LetUILoading.show = Loading.show;
-LetUILoading.hide = Loading.hide;
-Object.defineProperty(Vue.prototype, "$loading", {
+LetUILoading.show = Loading.show
+LetUILoading.hide = Loading.hide
+Object.defineProperty(Vue.prototype, '$loading', {
   get() {
+    // console.log("this.$el", this.$el, this);
     if (!this._loading) {
-      this._loading = new Loading(this.$el);
+      this._loading = new Loading(this.$el)
     }
-    return this._loading;
-  }
-});
+    return this._loading
+  },
+})
 
-Object.defineProperty(Vue.prototype, "$tip", {
+Object.defineProperty(Vue.prototype, '$tip', {
   get() {
-    return this.$Notice;
-  }
-});
+    return this.$Notice
+  },
+})
+
+Object.defineProperty(Vue.prototype, '$loading2', {
+  get() {
+    const el = this.$el
+    if (!this._loading) {
+      this._loading = ELoading.service({
+        fullscreen: false,
+        target: el,
+        // boxClass: "loading-inner",
+        // background: "rgba(0,0,0,0)",
+        // color: "#fff",
+        // size: 24,
+        // ...options
+      })
+    }
+    return this._loading
+  },
+})

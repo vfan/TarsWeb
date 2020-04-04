@@ -2,32 +2,21 @@
   <div class="page_server_manage">
     <!-- 服务列表 -->
     <h4>
-      {{ this.$t("serverList.title.serverList") }}
+      {{ this.$t('serverList.title.serverList') }}
       <i class="icon iconfont el-icon-third-shuaxin" @click="getServerList"></i>
     </h4>
-
-    <el-table
-      v-if="serverList"
-      :data="serverList"
-      :empty-msg="$t('common.nodata')"
-      stripe
-      border
-      ref="serverListLoading"
-    >
-      <el-table-column
-        :label="$t('serverList.table.th.service')"
-        prop="server_name"
-      >
+    <el-table v-if="serverList" :data="serverList" :empty-msg="$t('common.nodata')" stripe border="" ref="serverListLoading">
+      <el-table-column :label="$t('serverList.table.th.service')" prop="server_name">
         <template slot-scope="scope">
           <el-link
             type="primary"
             :href="
               '/static/logview/logview.html?app=' +
-                [scope.row.application] +
-                '&server_name=' +
-                [scope.row.server_name] +
-                '&node_name=' +
-                [scope.row.node_name]
+              [scope.row.application] +
+              '&server_name=' +
+              [scope.row.server_name] +
+              '&node_name=' +
+              [scope.row.node_name]
             "
             title="点击查看服务日志(view server logs)"
             target="_blank"
@@ -36,395 +25,329 @@
           >
         </template>
       </el-table-column>
-      <el-table-column
-        :label="$t('serverList.table.th.ip')"
-        prop="node_name"
-        width="140"
-      ></el-table-column>
+      <el-table-column :label="$t('serverList.table.th.ip')" prop="node_name" width="140"></el-table-column>
       <el-table-column :label="$t('serverList.table.th.enableSet')">
         <template slot-scope="scope">
-          <span v-if="!scope.row.enable_set">{{ $t("common.disable") }}</span>
-          <p v-else style="max-width: 200px">
-            {{ $t("common.set.setName") }}：{{ scope.row.set_name }}
+          <span v-if="!scope.row.enable_set">{{ $t('common.disable') }}</span>
+          <p v-else style="max-width: 200px;">
+            {{ $t('common.set.setName') }}：{{ scope.row.set_name }}
             <br />
-            {{ $t("common.set.setArea") }}：{{ scope.row.set_area }}
+            {{ $t('common.set.setArea') }}：{{ scope.row.set_area }}
             <br />
-            {{ $t("common.set.setGroup") }}：{{ scope.row.set_group }}
+            {{ $t('common.set.setGroup') }}：{{ scope.row.set_group }}
           </p>
         </template>
       </el-table-column>
-      <el-table-column
-        :label="$t('serverList.table.th.configStatus')"
-        width="90"
-      >
+      <el-table-column :label="$t('serverList.table.th.configStatus')" width="90">
         <template slot-scope="scope">
-          <span
-            :class="
-              scope.row.setting_state === 'active'
-                ? 'status-active'
-                : 'status-off'
-            "
-          ></span>
+          <span :class="scope.row.setting_state === 'active' ? 'status-active' : 'status-off'"></span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('serverList.table.th.currStatus')" width="90">
         <template slot-scope="scope">
           <span
             :class="
-              scope.row.present_state === 'active'
-                ? 'status-active'
-                : scope.row.present_state === 'activating'
-                ? 'status-activating'
-                : 'status-off'
+              scope.row.present_state === 'active' ? 'status-active' : scope.row.present_state === 'activating' ? 'status-activating' : 'status-off'
             "
           ></span>
         </template>
       </el-table-column>
-      <el-table-column
-        :label="$t('serverList.table.th.processID')"
-        prop="process_id"
-        width="80"
-      ></el-table-column>
-      <el-table-column
-        :label="$t('serverList.table.th.version')"
-        prop="patch_version"
-        width="68"
-      ></el-table-column>
+      <el-table-column :label="$t('serverList.table.th.processID')" prop="process_id" width="80"></el-table-column>
+      <el-table-column :label="$t('serverList.table.th.version')" prop="patch_version" width="68"></el-table-column>
       <el-table-column :label="$t('serverList.table.th.time')">
         <template slot-scope="scope">
-          <span style="word-break: break-word">{{
-            handleNoPublishedTime(scope.row.patch_time)
-          }}</span>
+          <span style="word-break: break-word;">{{ handleNoPublishedTime(scope.row.patch_time) }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('operate.operates')" width="260">
         <template slot-scope="scope">
-          <el-link @click="configServer(scope.row.id)" type="primary">{{
-            $t("operate.update")
-          }}</el-link>
-
-          <el-link type="primary" @click="restartServer(scope.row.id)">{{
-            $t("operate.restart")
-          }}</el-link>
-          <el-link type="danger" @click="stopServer(scope.row.id)">{{
-            $t("operate.stop")
-          }}</el-link>
-          <el-link type="primary" @click="manageServant(scope.row)">{{
-            $t("operate.servant")
-          }}</el-link>
-          <el-link type="primary" @click="showMoreCmd(scope.row)">{{
-            $t("operate.more")
-          }}</el-link>
+          <el-link @click="configServer(scope.row.id)" type="primary">{{ $t('operate.update') }}</el-link>
+          <el-link type="primary" @click="restartServer(scope.row.id)">{{ $t('operate.restart') }}</el-link>
+          <el-link type="danger" @click="stopServer(scope.row.id)">{{ $t('operate.stop') }}</el-link>
+          <el-link type="primary" @click="manageServant(scope.row)">{{ $t('operate.servant') }}</el-link>
+          <el-link type="primary" @click="showMoreCmd(scope.row)">{{ $t('operate.more') }}</el-link>
         </template>
       </el-table-column>
     </el-table>
     <br />
-
     <!-- 服务实时状态 -->
     <h4 v-if="serverNotifyList && showOthers">
-      {{ this.$t("serverList.title.serverStatus") }}
+      {{ this.$t('serverList.title.serverStatus') }}
       <i class="icon iconfont" @click="getServerNotifyList()">&#xec08;</i>
     </h4>
     <el-table
       v-if="serverNotifyList && showOthers"
       :data="serverNotifyList"
       stripe
-      border
+      border=""
       :empty-msg="$t('common.nodata')"
       ref="serverNotifyListLoading"
     >
-      <el-table-column
-        min-width="20%"
-        :label="$t('common.time')"
-        prop="notifytime"
-      ></el-table-column>
-      <el-table-column
-        min-width="28%"
-        :label="$t('serverList.table.th.serviceID')"
-        prop="server_id"
-      ></el-table-column>
-      <el-table-column
-        min-width="15%"
-        :label="$t('serverList.table.th.threadID')"
-        prop="thread_id"
-      ></el-table-column>
-      <el-table-column
-        :label="$t('serverList.table.th.result')"
-        prop="result"
-      ></el-table-column>
+      <el-table-column min-width="20%" :label="$t('common.time')" prop="notifytime"></el-table-column>
+      <el-table-column min-width="28%" :label="$t('serverList.table.th.serviceID')" prop="server_id"></el-table-column>
+      <el-table-column min-width="15%" :label="$t('serverList.table.th.threadID')" prop="thread_id"></el-table-column>
+      <el-table-column :label="$t('serverList.table.th.result')" prop="result"></el-table-column>
     </el-table>
-
-    <el-pagination
-      :page="pageNum"
-      @change="gotoPage"
-      style="margin-bottom: 32px;"
-      :total="total"
-    ></el-pagination>
+    <el-pagination :page="pageNum" @change="gotoPage" style="margin-bottom: 32px;" :total="total"></el-pagination>
     <!-- 编辑服务弹窗 -->
-    <let-modal
-      v-model="configModal.show"
+    <el-dialog
+      :visible.sync="configModal.show"
       :title="$t('serverList.dlg.title.editService')"
-      width="800px"
+      width="900px"
+      ref="diaglog_serverconfig"
       :footShow="!!(configModal.model && configModal.model.server_name)"
-      @on-confirm="saveConfig"
       @close="closeConfigModal"
-      @on-cancel="closeConfigModal"
     >
-      <let-form
+      <el-form
         v-if="!!(configModal.model && configModal.model.server_name)"
         ref="configForm"
-        itemWidth="360px"
+        label-width="120px"
+        :model="configModal.model"
+        inline
+        label-position="right"
         :columns="2"
-        class="two-columns"
+        class="two-columns server-edit"
       >
-        <let-form-item :label="$t('common.service')">{{
-          configModal.model.server_name
-        }}</let-form-item>
-        <let-form-item :label="$t('common.ip')">{{
-          configModal.model.node_name
-        }}</let-form-item>
-        <let-form-item :label="$t('serverList.dlg.isBackup')" required>
-          <let-radio-group
-            size="small"
-            v-model="configModal.model.bak_flag"
-            :data="[
-              { value: true, text: $t('common.yes') },
-              { value: false, text: $t('common.no') }
-            ]"
-          ></let-radio-group>
-        </let-form-item>
-        <let-form-item :label="$t('common.template')" required>
-          <let-select
-            size="small"
-            v-model="configModal.model.template_name"
-            v-if="
-              configModal.model.templates && configModal.model.templates.length
-            "
-            required
-          >
-            <let-option
-              v-for="t in configModal.model.templates"
-              :key="t"
-              :value="t"
-              >{{ t }}</let-option
+        <el-row>
+          <el-col :span="12">
+            <el-form-item prop="server_name" :label="$t('common.service')">{{ configModal.model.server_name }}</el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="node_name" :label="$t('common.ip')">{{ configModal.model.node_name }}</el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item prop="bak_flag" :label="$t('serverList.dlg.isBackup')" required>
+              <el-radio-group
+                size="small"
+                v-model="configModal.model.bak_flag"
+                :data="[
+                  { value: true, text: $t('common.yes') },
+                  { value: false, text: $t('common.no') },
+                ]"
+              >
+                <el-radio :label="true">{{ $t('common.yes') }}</el-radio>
+                <el-radio :label="false">{{ $t('common.no') }}</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="template_name" :label="$t('common.template')" required>
+              <el-select
+                size="small"
+                v-model="configModal.model.template_name"
+                v-if="configModal.model.templates && configModal.model.templates.length"
+                required
+              >
+                <el-option v-for="t in configModal.model.templates" :key="t" :value="t">{{ t }}</el-option>
+              </el-select>
+              <span v-else>{{ configModal.model.template_name }}</span>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item prop="server_type" :label="$t('serverList.dlg.serviceType')" required>
+              <el-select size="small" v-model="configModal.model.server_type" required>
+                <el-option v-for="t in serverTypes" :key="t" :value="t">{{ t }}</el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="enable_set" :label="$t('serverList.table.th.enableSet')" required>
+              <el-radio-group size="small" v-model="configModal.model.enable_set">
+                <el-radio :label="true">{{ $t('common.enable') }}</el-radio>
+                <el-radio :label="false">{{ $t('common.disable') }}</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item
+              prop="set_name"
+              :rules="[
+                {
+                  required: true,
+                  message: 'set name is required',
+                  trigger: 'blur',
+                },
+                {
+                  validator: (rule, value, callback) => {
+                    if (/^[a-z]+$/.test(value) === false) callback($t('serverList.dlg.errMsg.setName'))
+                    return callback()
+                  },
+                  trigger: 'blur',
+                },
+              ]"
+              :label="$t('common.set.setName')"
+              v-if="configModal.model.enable_set"
             >
-          </let-select>
-          <span v-else>{{ configModal.model.template_name }}</span>
-        </let-form-item>
-        <let-form-item :label="$t('serverList.dlg.serviceType')" required>
-          <let-select
-            size="small"
-            v-model="configModal.model.server_type"
-            required
-          >
-            <let-option v-for="t in serverTypes" :key="t" :value="t">{{
-              t
-            }}</let-option>
-          </let-select>
-        </let-form-item>
-        <let-form-item :label="$t('serverList.table.th.enableSet')" required>
-          <let-radio-group
-            size="small"
-            v-model="configModal.model.enable_set"
-            :data="[
-              { value: true, text: $t('common.enable') },
-              { value: false, text: $t('common.disable') }
-            ]"
-          ></let-radio-group>
-        </let-form-item>
-        <let-form-item
-          :label="$t('common.set.setName')"
-          required
-          v-if="configModal.model.enable_set"
-        >
-          <let-input
-            size="small"
-            v-model="configModal.model.set_name"
-            :placeholder="$t('serverList.dlg.errMsg.setName')"
-            required
-            pattern="^[a-z]+$"
-            :pattern-tip="$t('serverList.dlg.errMsg.setName')"
-          ></let-input>
-        </let-form-item>
-        <let-form-item
-          :label="$t('common.set.setArea')"
-          required
-          v-if="configModal.model.enable_set"
-        >
-          <let-input
-            size="small"
-            v-model="configModal.model.set_area"
-            :placeholder="$t('serverList.dlg.errMsg.setArea')"
-            required
-            pattern="^[a-z]+$"
-            :pattern-tip="$t('serverList.dlg.errMsg.setArea')"
-          ></let-input>
-        </let-form-item>
-        <let-form-item
-          :label="$t('common.set.setGroup')"
-          required
-          v-if="configModal.model.enable_set"
-        >
-          <let-input
-            size="small"
-            v-model="configModal.model.set_group"
-            :placeholder="$t('serverList.dlg.errMsg.setGroup')"
-            required
-            pattern="^[0-9\*]+$"
-            :pattern-tip="$t('serverList.dlg.errMsg.setGroup')"
-          ></let-input>
-        </let-form-item>
-        <let-form-item :label="$t('serverList.dlg.asyncThread')" required>
-          <let-input
-            size="small"
-            v-model="configModal.model.async_thread_num"
-            :placeholder="$t('serverList.dlg.placeholder.thread')"
-            required
-            :pattern="
-              configModal.model.server_type === 'tars_nodejs'
-                ? '^[1-9][0-9]*$'
-                : '^([3-9]|[1-9][0-9]+)$'
-            "
-            pattern-tip="$t('serverList.dlg.placeholder.thread')"
-          ></let-input>
-        </let-form-item>
-        <let-form-item :label="$t('serverList.dlg.defaultPath')">
-          <let-input
-            size="small"
-            v-model="configModal.model.base_path"
-          ></let-input>
-        </let-form-item>
-        <let-form-item :label="$t('serverList.dlg.exePath')">
-          <let-input
-            size="small"
-            v-model="configModal.model.exe_path"
-          ></let-input>
-        </let-form-item>
-        <let-form-item :label="$t('serverList.dlg.startScript')">
-          <let-input
-            size="small"
-            v-model="configModal.model.start_script_path"
-          ></let-input>
-        </let-form-item>
-        <let-form-item :label="$t('serverList.dlg.stopScript')">
-          <let-input
-            size="small"
-            v-model="configModal.model.stop_script_path"
-          ></let-input>
-        </let-form-item>
-        <let-form-item
-          :label="$t('serverList.dlg.monitorScript')"
-          itemWidth="724px"
-        >
-          <let-input
-            size="small"
-            v-model="configModal.model.monitor_script_path"
-          ></let-input>
-        </let-form-item>
-        <let-form-item
-          :label="$t('serverList.dlg.privateTemplate')"
-          labelWidth="150px"
-          itemWidth="724px"
-        >
-          <let-input
-            size="large"
-            type="textarea"
-            :rows="4"
-            v-model="configModal.model.profile"
-          ></let-input>
-        </let-form-item>
-      </let-form>
-      <div v-else class="loading-placeholder" ref="configFormLoading"></div>
-    </let-modal>
-    <!-- Servant管理弹窗 -->
-    <let-modal
-      v-model="servantModal.show"
-      :title="$t('serverList.table.servant.title')"
-      width="1200px"
-      :footShow="false"
-      @close="closeServantModal"
-    >
-      <let-button
-        size="small"
-        theme="primary"
-        class="tbm16"
-        @click="configServant()"
-        >{{ $t("operate.add") }} Servant</let-button
-      >
-      <let-table
-        v-if="servantModal.model"
-        :data="servantModal.model"
-        :empty-msg="$t('common.nodata')"
-      >
-        <let-table-column
-          :title="$t('operate.servant')"
-          prop="servant"
-        ></let-table-column>
-        <let-table-column
-          :title="$t('serverList.table.servant.adress')"
-          prop="endpoint"
-        ></let-table-column>
-        <let-table-column
-          :title="$t('serverList.table.servant.thread')"
-          prop="thread_num"
-        ></let-table-column>
-        <let-table-column
-          :title="$t('serverList.table.servant.maxConnecttions')"
-          prop="max_connections"
-        ></let-table-column>
-        <let-table-column
-          :title="$t('serverList.table.servant.maxQueue')"
-          prop="queuecap"
-        ></let-table-column>
-        <let-table-column
-          :title="$t('serverList.table.servant.timeout')"
-          prop="queuetimeout"
-        ></let-table-column>
-        <let-table-column :title="$t('operate.operates')" width="90px">
-          <template slot-scope="scope">
-            <let-table-operation @click="configServant(scope.row.id)">{{
-              $t("operate.update")
-            }}</let-table-operation>
-            <let-table-operation
-              class="danger"
-              @click="deleteServant(scope.row.id)"
-              >{{ $t("operate.delete") }}</let-table-operation
+              <el-input
+                size="small"
+                v-model="configModal.model.set_name"
+                :placeholder="$t('serverList.dlg.errMsg.setName')"
+                required
+                pattern="^[a-z]+$"
+                :pattern-tip="$t('serverList.dlg.errMsg.setName')"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item
+              prop="set_area"
+              :rules="[
+                {
+                  required: true,
+                  message: 'set area is required',
+                  trigger: 'blur',
+                },
+                {
+                  validator: (rule, value, callback) => {
+                    if (/^[a-z]+$/.test(value) === false) return callback($t('serverList.dlg.errMsg.setArea'))
+                    return callback()
+                  },
+                  trigger: 'blur',
+                },
+              ]"
+              :label="$t('common.set.setArea')"
+              v-if="configModal.model.enable_set"
             >
-          </template>
-        </let-table-column>
-      </let-table>
-      <div v-else class="loading-placeholder" ref="servantModalLoading"></div>
-    </let-modal>
+              <el-input
+                size="small"
+                v-model="configModal.model.set_area"
+                :placeholder="$t('serverList.dlg.errMsg.setArea')"
+                required
+                pattern="^[a-z]+$"
+                :pattern-tip="$t('serverList.dlg.errMsg.setArea')"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item
+              prop="set_group"
+              :rules="[
+                {
+                  required: true,
+                  message: 'set group is required',
+                  trigger: 'blur',
+                },
+                {
+                  validator: (rule, value, callback) => {
+                    if (/^[0-9\*]+$/.test(value) === false) return callback($t('serverList.dlg.errMsg.setGroup'))
+                    return callback()
+                  },
+                  trigger: 'blur',
+                },
+              ]"
+              :label="$t('common.set.setGroup')"
+              v-if="configModal.model.enable_set"
+            >
+              <el-input
+                size="small"
+                v-model="configModal.model.set_group"
+                :placeholder="$t('serverList.dlg.errMsg.setGroup')"
+                required
+                pattern="^[0-9\*]+$"
+                :pattern-tip="$t('serverList.dlg.errMsg.setGroup')"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12"> </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item
+              prop="async_thread_num"
+              :label="$t('serverList.dlg.asyncThread')"
+              required
+              :rules="[
+                {
+                  required: true,
+                  message: 'async threads is required',
+                  trigger: 'blur',
+                },
+                {
+                  validator: (rule, value, callback) => {
+                    if (/^[0-9\*]+$/.test(value) === false) return callback($t('serverList.dlg.placeholder.thread'))
+                    return callback()
+                  },
+                  trigger: 'blur',
+                },
+              ]"
+            >
+              <el-input
+                size="small"
+                v-model="configModal.model.async_thread_num"
+                :placeholder="$t('serverList.dlg.placeholder.thread')"
+                required
+                :pattern="configModal.model.server_type === 'tars_nodejs' ? '^[1-9][0-9]*$' : '^([3-9]|[1-9][0-9]+)$'"
+                :pattern-tip="$t('serverList.dlg.placeholder.thread')"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="base_path" :label="$t('serverList.dlg.defaultPath')">
+              <el-input size="small" v-model="configModal.model.base_path"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item prop="exe_path" :label="$t('serverList.dlg.exePath')">
+              <el-input size="small" v-model="configModal.model.exe_path"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item prop="start_script_path" :label="$t('serverList.dlg.startScript')">
+              <el-input size="small" v-model="configModal.model.start_script_path"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item prop="stop_script_path" :label="$t('serverList.dlg.stopScript')">
+              <el-input size="small" v-model="configModal.model.stop_script_path"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12"> </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24"
+            ><el-form-item prop="monitor_script_path" :label="$t('serverList.dlg.monitorScript')">
+              <el-input style="width: 680px;" size="small" v-model="configModal.model.monitor_script_path"></el-input> </el-form-item
+          ></el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item prop="profile" :label="$t('serverList.dlg.privateTemplate')">
+              <el-input style="width: 680px;" size="large" type="textarea" :rows="4" v-model="configModal.model.profile"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="closeConfigModal">{{ $t('common.cancel') }}</el-button>
+        <el-button type="primary" @click="saveConfig">{{ $t('common.submit') }}</el-button>
+      </span>
+    </el-dialog>
     <!-- Servant新增、编辑弹窗 -->
     <let-modal
       v-model="servantDetailModal.show"
-      :title="
-        servantDetailModal.isNew
-          ? `${$t('operate.title.add')} Servant`
-          : `${$t('operate.title.update')} Servant`
-      "
+      :title="servantDetailModal.isNew ? `${$t('operate.title.add')} Servant` : `${$t('operate.title.update')} Servant`"
       width="800px"
       :footShow="!!servantDetailModal.model"
       @on-confirm="saveServantDetail"
       @close="closeServantDetailModal"
       @on-cancel="closeServantDetailModal"
     >
-      <let-form
-        v-if="servantDetailModal.model"
-        ref="servantDetailForm"
-        itemWidth="360px"
-        :columns="2"
-        class="two-columns"
-      >
-        <let-form-item
-          :label="$t('serverList.servant.appService')"
-          itemWidth="724px"
-        >
-          <span
-            >{{ servantDetailModal.model.application }}·{{
-              servantDetailModal.model.server_name
-            }}</span
-          >
+      <let-form v-if="servantDetailModal.model" ref="servantDetailForm" itemWidth="360px" :columns="2" class="two-columns">
+        <let-form-item :label="$t('serverList.servant.appService')" itemWidth="724px">
+          <span>{{ servantDetailModal.model.application }}·{{ servantDetailModal.model.server_name }}</span>
         </let-form-item>
         <let-form-item :label="$t('serverList.servant.objName')" required>
           <let-input
@@ -456,10 +379,7 @@
             :extraTip="isEndpointValid ? '' : $t('serverList.servant.error')"
           ></let-input>
         </let-form-item>
-        <let-form-item
-          :label="$t('serverList.table.servant.nodeName')"
-          required
-        >
+        <let-form-item :label="$t('serverList.table.servant.nodeName')" required>
           <let-input
             ref="node_name"
             size="small"
@@ -469,38 +389,17 @@
             :disabled="!servantDetailModal.isNew"
           ></let-input>
         </let-form-item>
-        <let-form-item
-          :label="$t('serverList.servant.maxConnecttions')"
-          labelWidth="150px"
-        >
-          <let-input
-            size="small"
-            v-model="servantDetailModal.model.max_connections"
-          ></let-input>
+        <let-form-item :label="$t('serverList.servant.maxConnecttions')" labelWidth="150px">
+          <let-input size="small" v-model="servantDetailModal.model.max_connections"></let-input>
         </let-form-item>
-        <let-form-item
-          :label="$t('serverList.servant.lengthOfQueue')"
-          labelWidth="150px"
-        >
-          <let-input
-            size="small"
-            v-model="servantDetailModal.model.queuecap"
-          ></let-input>
+        <let-form-item :label="$t('serverList.servant.lengthOfQueue')" labelWidth="150px">
+          <let-input size="small" v-model="servantDetailModal.model.queuecap"></let-input>
         </let-form-item>
-        <let-form-item
-          :label="$t('serverList.servant.queueTimeout')"
-          labelWidth="150px"
-        >
-          <let-input
-            size="small"
-            v-model="servantDetailModal.model.queuetimeout"
-          ></let-input>
+        <let-form-item :label="$t('serverList.servant.queueTimeout')" labelWidth="150px">
+          <let-input size="small" v-model="servantDetailModal.model.queuetimeout"></let-input>
         </let-form-item>
         <let-form-item :label="$t('serverList.servant.allowIP')">
-          <let-input
-            size="small"
-            v-model="servantDetailModal.model.allow_ip"
-          ></let-input>
+          <let-input size="small" v-model="servantDetailModal.model.allow_ip"></let-input>
         </let-form-item>
         <let-form-item :label="$t('serverList.servant.protocol')" required>
           <let-radio-group
@@ -508,18 +407,12 @@
             v-model="servantDetailModal.model.protocol"
             :data="[
               { value: 'tars', text: 'TARS' },
-              { value: 'not_tars', text: $t('serverList.servant.notTARS') }
+              { value: 'not_tars', text: $t('serverList.servant.notTARS') },
             ]"
           ></let-radio-group>
         </let-form-item>
-        <let-form-item
-          :label="$t('serverList.servant.treatmentGroup')"
-          labelWidth="150px"
-        >
-          <let-input
-            size="small"
-            v-model="servantDetailModal.model.handlegroup"
-          ></let-input>
+        <let-form-item :label="$t('serverList.servant.treatmentGroup')" labelWidth="150px">
+          <let-input size="small" v-model="servantDetailModal.model.handlegroup"></let-input>
         </let-form-item>
       </let-form>
     </let-modal>
@@ -535,52 +428,25 @@
     >
       <let-form v-if="moreCmdModal.model" ref="moreCmdForm">
         <let-form-item itemWidth="100%">
-          <let-radio
-            v-model="moreCmdModal.model.selected"
-            label="setloglevel"
-            >{{ $t("serverList.servant.logLevel") }}</let-radio
-          >
-          <let-select
-            size="small"
-            :disabled="moreCmdModal.model.selected !== 'setloglevel'"
-            v-model="moreCmdModal.model.setloglevel"
-          >
-            <let-option v-for="l in logLevels" :key="l" :value="l">{{
-              l
-            }}</let-option>
+          <let-radio v-model="moreCmdModal.model.selected" label="setloglevel">{{ $t('serverList.servant.logLevel') }}</let-radio>
+          <let-select size="small" :disabled="moreCmdModal.model.selected !== 'setloglevel'" v-model="moreCmdModal.model.setloglevel">
+            <let-option v-for="l in logLevels" :key="l" :value="l">{{ l }}</let-option>
           </let-select>
         </let-form-item>
         <let-form-item itemWidth="100%">
-          <let-radio v-model="moreCmdModal.model.selected" label="loadconfig">{{
-            $t("serverList.servant.pushFile")
-          }}</let-radio>
+          <let-radio v-model="moreCmdModal.model.selected" label="loadconfig">{{ $t('serverList.servant.pushFile') }}</let-radio>
           <let-select
             size="small"
-            :placeholder="
-              moreCmdModal.model.configs && moreCmdModal.model.configs.length
-                ? $t('pub.dlg.defaultValue')
-                : $t('pub.dlg.noConfFile')
-            "
-            :disabled="
-              !(
-                moreCmdModal.model.configs && moreCmdModal.model.configs.length
-              ) || moreCmdModal.model.selected !== 'loadconfig'
-            "
+            :placeholder="moreCmdModal.model.configs && moreCmdModal.model.configs.length ? $t('pub.dlg.defaultValue') : $t('pub.dlg.noConfFile')"
+            :disabled="!(moreCmdModal.model.configs && moreCmdModal.model.configs.length) || moreCmdModal.model.selected !== 'loadconfig'"
             v-model="moreCmdModal.model.loadconfig"
             :required="moreCmdModal.model.selected === 'loadconfig'"
           >
-            <let-option
-              v-for="l in moreCmdModal.model.configs"
-              :key="l.filename"
-              :value="l.filename"
-              >{{ l.filename }}</let-option
-            >
+            <let-option v-for="l in moreCmdModal.model.configs" :key="l.filename" :value="l.filename">{{ l.filename }}</let-option>
           </let-select>
         </let-form-item>
         <let-form-item itemWidth="100%">
-          <let-radio v-model="moreCmdModal.model.selected" label="command">{{
-            $t("serverList.servant.sendCommand")
-          }}</let-radio>
+          <let-radio v-model="moreCmdModal.model.selected" label="command">{{ $t('serverList.servant.sendCommand') }}</let-radio>
           <let-input
             size="small"
             :disabled="moreCmdModal.model.selected !== 'command'"
@@ -589,16 +455,11 @@
           ></let-input>
         </let-form-item>
         <let-form-item itemWidth="100%">
-          <let-radio v-model="moreCmdModal.model.selected" label="connection">{{
-            $t("serverList.servant.serviceLink")
-          }}</let-radio>
+          <let-radio v-model="moreCmdModal.model.selected" label="connection">{{ $t('serverList.servant.serviceLink') }}</let-radio>
         </let-form-item>
         <let-form-item itemWidth="100%">
-          <let-radio
-            v-model="moreCmdModal.model.selected"
-            label="undeploy_tars"
-            class="danger"
-            >{{ $t("operate.undeploy") }} {{ $t("common.service") }}</let-radio
+          <let-radio v-model="moreCmdModal.model.selected" label="undeploy_tars" class="danger"
+            >{{ $t('operate.undeploy') }} {{ $t('common.service') }}</let-radio
           >
         </let-form-item>
       </let-form>
@@ -607,18 +468,20 @@
 </template>
 
 <script>
+import { Loading } from 'element-ui'
+
 export default {
-  name: "ServerManage",
+  name: 'ServerManage',
   data() {
     return {
       // 当前页面信息
       serverData: {
         level: 5,
-        application: "",
-        server_name: "",
-        set_name: "",
-        set_area: "",
-        set_group: ""
+        application: '',
+        server_name: '',
+        set_name: '',
+        set_area: '',
+        set_group: '',
       },
 
       // 服务列表
@@ -632,346 +495,316 @@ export default {
       total: 1,
 
       // 编辑服务
-      serverTypes: [
-        "tars_cpp",
-        "tars_java",
-        "tars_php",
-        "tars_nodejs",
-        "not_tars",
-        "tars_go"
-      ],
+      serverTypes: ['tars_cpp', 'tars_java', 'tars_php', 'tars_nodejs', 'not_tars', 'tars_go'],
       configModal: {
         show: false,
-        model: null
+        model: null,
       },
 
       // 编辑servant
       servantModal: {
         show: false,
         model: null,
-        currentServer: null
+        currentServer: null,
       },
       servantDetailModal: {
         show: false,
         isNew: true,
-        model: null
+        model: null,
       },
 
       // 更多命令
-      logLevels: ["NONE", "DEBUG", "INFO", "WARN", "ERROR"],
+      logLevels: ['NONE', 'DEBUG', 'INFO', 'WARN', 'ERROR'],
       moreCmdModal: {
         show: false,
         model: null,
-        currentServer: null
+        currentServer: null,
       },
 
       // 失败重试次数
-      failCount: 0
-    };
+      failCount: 0,
+    }
   },
   computed: {
     showOthers() {
-      return this.serverData.level === 5;
+      return this.serverData.level === 5
     },
     isEndpointValid() {
-      if (
-        !this.servantDetailModal.model ||
-        !this.servantDetailModal.model.endpoint
-      ) {
-        return false;
+      if (!this.servantDetailModal.model || !this.servantDetailModal.model.endpoint) {
+        return false
       }
-      return this.checkServantEndpoint(this.servantDetailModal.model.endpoint);
-    }
+      return this.checkServantEndpoint(this.servantDetailModal.model.endpoint)
+    },
   },
   methods: {
     // 获取服务列表
     getServerList() {
-      const loading = this.$refs.serverListLoading.$loading.show();
+      const loading = this.$refs.serverListLoading.$loading2
+      // loading.show();
 
       this.$ajax
-        .getJSON("/server/api/server_list", {
-          tree_node_id: this.$route.params.treeid
+        .getJSON('/server/api/server_list', {
+          tree_node_id: this.$route.params.treeid,
         })
         .then(data => {
-          loading.hide();
-          this.serverList = data;
+          loading.close()
+          this.serverList = data
         })
         .catch(err => {
-          loading.hide();
-          this.$confirm(
-            err.err_msg || err.message || this.$t("serverList.msg.fail"),
-            this.$t("common.alert")
-          ).then(() => {
-            this.getServerList();
-          });
-        });
+          loading.hide()
+          this.$confirm(err.err_msg || err.message || this.$t('serverList.msg.fail'), this.$t('common.alert')).then(() => {
+            this.getServerList()
+          })
+        })
     },
     // 获取服务实时状态
     getServerNotifyList(curr_page) {
-      if (!this.showOthers) return;
-      // const loading = this.$refs.serverNotifyListLoading.$loading.show();
+      if (!this.showOthers) return
+
+      console.log('this.$refs.serverNotifyListLoading', this.$refs.serverNotifyListLoading)
+      const loading = this.$refs.serverNotifyListLoading.$loading.show()
       if (!curr_page) {
-        curr_page = this.pageNum || 1;
+        curr_page = this.pageNum || 1
       }
       this.$ajax
-        .getJSON("/server/api/server_notify_list", {
+        .getJSON('/server/api/server_notify_list', {
           tree_node_id: this.$route.params.treeid,
           page_size: this.pageSize,
-          curr_page: curr_page
+          curr_page: curr_page,
         })
         .then(data => {
-          // loading.hide();
-          this.pageNum = curr_page;
-          this.total = Math.ceil(data.count / this.pageSize);
-          this.serverNotifyList = data.rows;
-          var that = this;
+          loading.hide()
+          this.pageNum = curr_page
+          this.total = Math.ceil(data.count / this.pageSize)
+          this.serverNotifyList = data.rows
+          var that = this
         })
         .catch(err => {
-          // loading.hide();
-          this.$tip.error(
-            `${this.$t("serverList.restart.failed")}: ${err.err_msg ||
-              err.message}`
-          );
-        });
+          loading.hide()
+          this.$tip.error(`${this.$t('serverList.restart.failed')}: ${err.err_msg || err.message}`)
+        })
     },
     // 切换服务实时状态页码
     gotoPage(num) {
-      this.getServerNotifyList(num);
+      this.getServerNotifyList(num)
     },
 
     // 获取模版列表
     getTemplateList() {
       this.$ajax
-        .getJSON("/server/api/template_name_list")
+        .getJSON('/server/api/template_name_list')
         .then(data => {
           if (this.configModal.model) {
-            this.configModal.model.templates = data;
+            this.configModal.model.templates = data
           } else {
-            this.configModal.model = { templates: data };
+            this.configModal.model = { templates: data }
           }
         })
         .catch(err => {
-          this.$tip.error(
-            `${this.$t("serverList.restart.failed")}: ${err.err_msg ||
-              err.message}`
-          );
-        });
+          this.$tip.error(`${this.$t('serverList.restart.failed')}: ${err.err_msg || err.message}`)
+        })
     },
     // 获取服务数据
     getServerConfig(id) {
-      const loading = this.$loading.show({
-        target: this.$refs.configFormLoading
-      });
+      console.log('this.$refs.configFormLoading', this.$refs)
+
+      let loading = Loading.service({ target: this.$refs.diaglog_serverconfig.$refs.dialog, fullscreen: false })
+      // const loading = this.$loading({
+      //   target: this.$refs.configFormLoading,
+      //   fullscreen: false,
+      // })
 
       this.$ajax
-        .getJSON("/server/api/server", {
-          id
+        .getJSON('/server/api/server', {
+          id,
         })
         .then(data => {
-          loading.hide();
+          loading.close()
           if (this.configModal.model) {
-            this.configModal.model = Object.assign(
-              {},
-              this.configModal.model,
-              data
-            );
+            this.configModal.model = Object.assign({}, this.configModal.model, data)
           } else {
-            data.templates = [];
-            this.configModal.model = data;
+            data.templates = []
+            this.configModal.model = data
           }
         })
         .catch(err => {
-          loading.hide();
-          this.closeConfigModal();
-          this.$tip.error(
-            `${this.$t("serverList.restart.failed")}: ${err.err_msg ||
-              err.message}`
-          );
-        });
+          loading.close()
+          this.closeConfigModal()
+          this.$tip.error(`${this.$t('serverList.restart.failed')}: ${err.err_msg || err.message}`)
+        })
     },
     // 编辑服务
     configServer(id) {
-      this.configModal.show = true;
-      this.getTemplateList();
-      this.getServerConfig(id);
+      this.configModal.show = true
+      this.getTemplateList()
+      this.getServerConfig(id)
     },
     saveConfig() {
-      if (this.$refs.configForm.validate()) {
-        const loading = this.$Loading.show();
+      this.$refs.configForm.validate((valid, validObjs) => {
+        if (!valid) {
+          return
+        }
+        let loading = Loading.service({ target: this.$refs.diaglog_serverconfig.$refs.dialog, fullscreen: false })
+
         this.$ajax
-          .postJSON("/server/api/update_server", {
+          .postJSON('/server/api/update_server', {
             isBak: this.configModal.model.bak_flag,
-            ...this.configModal.model
+            ...this.configModal.model,
           })
           .then(res => {
-            loading.hide();
+            loading.close()
             this.serverList = this.serverList.map(item => {
               if (item.id === res.id) {
-                return res;
+                return res
               }
-              return item;
-            });
-            this.closeConfigModal();
-            this.$tip.success(this.$t("serverList.restart.success"));
+              return item
+            })
+            this.closeConfigModal()
+            this.$tip.success(this.$t('serverList.restart.success'))
           })
           .catch(err => {
-            loading.hide();
-            this.$tip.error(
-              `${this.$t("serverList.restart.failed")}: ${err.message ||
-                err.err_msg}`
-            );
-          });
-      }
+            loading.close()
+            this.$tip.error(`${this.$t('serverList.restart.failed')}: ${err.message || err.err_msg}`)
+          })
+      })
     },
     closeConfigModal() {
-      if (this.$refs.configForm) this.$refs.configForm.resetValid();
-      this.configModal.show = false;
-      this.configModal.model = null;
+      if (this.$refs.configForm) this.$refs.configForm.resetFields()
+      this.configModal.show = false
+      console.log('close')
+      this.configModal.model = null
     },
 
     // 检查任务状态
     checkTaskStatus(taskid, isRetry) {
       return new Promise((resolve, reject) => {
         this.$ajax
-          .getJSON("/server/api/task", {
-            task_no: taskid
+          .getJSON('/server/api/task', {
+            task_no: taskid,
           })
           .then(data => {
             // 进行中，1秒后重试
             if (data.status === 1 || data.status === 0) {
               setTimeout(() => {
-                resolve(this.checkTaskStatus(taskid));
-              }, 3000);
+                resolve(this.checkTaskStatus(taskid))
+              }, 3000)
               // 成功
             } else if (data.status === 2) {
-              resolve(`taskid: ${data.task_no}`);
+              resolve(`taskid: ${data.task_no}`)
               // 失败
             } else {
-              reject(new Error(`taskid: ${data.task_no}`));
+              reject(new Error(`taskid: ${data.task_no}`))
             }
           })
           .catch(err => {
             // 网络问题重试1次
             if (isRetry) {
-              reject(
-                new Error(
-                  err.err_msg || err.message || this.$t("common.networkErr")
-                )
-              );
+              reject(new Error(err.err_msg || err.message || this.$t('common.networkErr')))
             } else {
               setTimeout(() => {
-                resolve(this.checkTaskStatus(taskid, true));
-              }, 3000);
+                resolve(this.checkTaskStatus(taskid, true))
+              }, 3000)
             }
-          });
-      });
+          })
+      })
     },
     // 添加任务
     addTask(id, command, tipObj) {
-      const loading = this.$Loading.show();
+      const loading = this.$Loading.show()
       this.$ajax
-        .postJSON("/server/api/add_task", {
+        .postJSON('/server/api/add_task', {
           serial: true, // 是否串行
           items: [
             {
               server_id: id,
-              command
-            }
-          ]
+              command,
+            },
+          ],
         })
         .then(res => {
           // eslint-disable-line
           return this.checkTaskStatus(res)
             .then(info => {
-              loading.hide();
+              loading.hide()
               // 任务成功重新拉取列表
-              this.getServerList();
+              this.getServerList()
               this.$tip.success({
                 title: tipObj.success,
-                message: info
-              });
+                message: info,
+              })
             })
             .catch(err => {
-              throw err;
-            });
+              throw err
+            })
         })
         .catch(err => {
-          loading.hide();
+          loading.hide()
           // 任务失败也重新拉取列表
-          this.getServerList();
+          this.getServerList()
           this.$tip.error({
             title: tipObj.error,
-            message: err.err_msg || err.message || this.$t("common.networkErr")
-          });
-        });
+            message: err.err_msg || err.message || this.$t('common.networkErr'),
+          })
+        })
     },
     // 重启服务
     restartServer(id) {
-      this.addTask(id, "restart", {
-        success: this.$t("serverList.restart.success"),
-        error: this.$t("serverList.restart.failed")
-      });
+      this.addTask(id, 'restart', {
+        success: this.$t('serverList.restart.success'),
+        error: this.$t('serverList.restart.failed'),
+      })
     },
     // 停止服务
     stopServer(id) {
-      this.$confirm(
-        this.$t("serverList.stopService.msg.stopService"),
-        this.$t("common.alert")
-      ).then(() => {
-        this.addTask(id, "stop", {
-          success: this.$t("serverList.restart.success"),
-          error: this.$t("serverList.restart.failed")
-        });
-      });
+      this.$confirm(this.$t('serverList.stopService.msg.stopService'), this.$t('common.alert')).then(() => {
+        this.addTask(id, 'stop', {
+          success: this.$t('serverList.restart.success'),
+          error: this.$t('serverList.restart.failed'),
+        })
+      })
     },
     // 下线服务
     undeployServer(server) {
       // console.log(server)
-      if (server.present_state === "active") {
-        this.$tip.error(`${this.$t("serverList.tips.undeploy")}`);
+      if (server.present_state === 'active') {
+        this.$tip.error(`${this.$t('serverList.tips.undeploy')}`)
       } else {
-        this.$confirm(
-          this.$t("serverList.dlg.msg.undeploy"),
-          this.$t("common.alert")
-        ).then(() => {
-          this.addTask(server.id, "undeploy_tars", {
-            success: this.$t("serverList.undeploy.success"),
-            error: this.$t("serverList.undeploy.failed")
-          });
-          this.closeMoreCmdModal();
-        });
+        this.$confirm(this.$t('serverList.dlg.msg.undeploy'), this.$t('common.alert')).then(() => {
+          this.addTask(server.id, 'undeploy_tars', {
+            success: this.$t('serverList.undeploy.success'),
+            error: this.$t('serverList.undeploy.failed'),
+          })
+          this.closeMoreCmdModal()
+        })
       }
     },
 
     // 管理Servant弹窗
     manageServant(server) {
-      this.servantModal.show = true;
+      this.servantModal.show = true
 
       const loading = this.$loading.show({
-        target: this.$refs.servantModalLoading
-      });
+        target: this.$refs.servantModalLoading,
+      })
 
       this.$ajax
-        .getJSON("/server/api/adapter_conf_list", {
-          id: server.id
+        .getJSON('/server/api/adapter_conf_list', {
+          id: server.id,
         })
         .then(data => {
-          loading.hide();
-          this.servantModal.model = data;
-          this.servantModal.currentServer = server;
+          loading.hide()
+          this.servantModal.model = data
+          this.servantModal.currentServer = server
         })
         .catch(err => {
-          loading.hide();
-          this.$tip.error(
-            `${this.$t("serverList.restart.failed")}: ${err.err_msg ||
-              err.message}`
-          );
-        });
+          loading.hide()
+          this.$tip.error(`${this.$t('serverList.restart.failed')}: ${err.err_msg || err.message}`)
+        })
     },
     closeServantModal() {
-      this.servantModal.show = false;
-      this.servantModal.model = null;
-      this.servantModal.currentServer = null;
+      this.servantModal.show = false
+      this.servantModal.model = null
+      this.servantModal.currentServer = null
     },
     // 新增、编辑 servant
     configServant(id) {
@@ -979,300 +812,267 @@ export default {
       this.servantDetailModal.model = {
         application: this.servantModal.currentServer.application,
         server_name: this.servantModal.currentServer.server_name,
-        obj_name: "",
-        node_name: "",
-        endpoint: "",
-        servant: "",
-        thread_num: "",
-        max_connections: "200000",
-        queuecap: "10000",
-        queuetimeout: "60000",
-        allow_ip: "",
-        protocol: "not_tars",
-        handlegroup: ""
-      };
-      this.servantDetailModal.isNew = true;
+        obj_name: '',
+        node_name: '',
+        endpoint: '',
+        servant: '',
+        thread_num: '',
+        max_connections: '200000',
+        queuecap: '10000',
+        queuetimeout: '60000',
+        allow_ip: '',
+        protocol: 'not_tars',
+        handlegroup: '',
+      }
+      this.servantDetailModal.isNew = true
       // 编辑
       if (id) {
-        const old = this.servantModal.model.find(item => item.id === id);
-        old.obj_name = old.servant.split(".")[2];
-        this.servantDetailModal.model = Object.assign(
-          {},
-          this.servantDetailModal.model,
-          old
-        );
-        this.servantDetailModal.isNew = false;
+        const old = this.servantModal.model.find(item => item.id === id)
+        old.obj_name = old.servant.split('.')[2]
+        this.servantDetailModal.model = Object.assign({}, this.servantDetailModal.model, old)
+        this.servantDetailModal.isNew = false
       }
-      this.servantDetailModal.show = true;
+      this.servantDetailModal.show = true
     },
     closeServantDetailModal() {
-      if (this.$refs.servantDetailForm)
-        this.$refs.servantDetailForm.resetValid();
-      this.servantDetailModal.show = false;
-      this.servantDetailModal.model = null;
+      if (this.$refs.servantDetailForm) this.$refs.servantDetailForm.resetFields()
+      this.servantDetailModal.show = false
+      this.servantDetailModal.model = null
     },
     // 检查绑定地址
     checkServantEndpoint(endpoint) {
-      const tmp = endpoint.split(/\s-/);
-      const regProtocol = /^tcp|udp|ssl$/i;
-      let regIP = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/i;
-      let regHost = /^h\s[^\s]+/i;
-      let regT = /^t\s([1-9]|[1-9]\d+)$/i;
-      let regPort = /^p\s\d{2,5}$/i;
+      const tmp = endpoint.split(/\s-/)
+      const regProtocol = /^tcp|udp|ssl$/i
+      let regIP = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/i
+      let regHost = /^h\s[^\s]+/i
+      let regT = /^t\s([1-9]|[1-9]\d+)$/i
+      let regPort = /^p\s\d{2,5}$/i
 
-      let check = true;
+      let check = true
       if (regProtocol.test(tmp[0])) {
-        let flag = 0;
+        let flag = 0
 
         for (let i = 1; i < tmp.length; i++) {
           // eslint-disable-line
           // 验证 -h
           if (regHost && regHost.test(tmp[i])) {
-            flag++; // eslint-disable-line
+            flag++ // eslint-disable-line
             // 提取参数
-            var ip = tmp[i].split(/\s/)[1];
+            var ip = tmp[i].split(/\s/)[1]
             if (regIP.test(ip)) {
-              this.servantDetailModal.model.node_name = ip;
+              this.servantDetailModal.model.node_name = ip
             }
-            regHost = null;
+            regHost = null
           }
 
           // 验证 -t
           if (regT && regT.test(tmp[i])) {
-            flag++; // eslint-disable-line
-            regT = null;
+            flag++ // eslint-disable-line
+            regT = null
           }
 
           // 验证 -p
           if (regPort && regPort.test(tmp[i])) {
-            const port = tmp[i].substring(2);
+            const port = tmp[i].substring(2)
             if (!(port < 0 || port > 65535)) {
-              flag++; // eslint-disable-line
+              flag++ // eslint-disable-line
             }
-            regPort = null;
+            regPort = null
           }
         }
-        check = flag === 3;
+        check = flag === 3
       } else {
-        check = false;
+        check = false
       }
-      return check;
+      return check
     },
     // 保存 servant
     saveServantDetail() {
       if (this.$refs.servantDetailForm.validate()) {
-        const loading = this.$Loading.show();
+        const loading = this.$Loading.show()
         // 新建
         if (this.servantDetailModal.isNew) {
-          const query = this.servantDetailModal.model;
-          query.servant = [
-            query.application,
-            query.server_name,
-            query.obj_name
-          ].join(".");
+          const query = this.servantDetailModal.model
+          query.servant = [query.application, query.server_name, query.obj_name].join('.')
           this.$ajax
-            .postJSON("/server/api/add_adapter_conf", query)
+            .postJSON('/server/api/add_adapter_conf', query)
             .then(res => {
-              loading.hide();
-              this.servantModal.model.unshift(res);
-              this.$tip.success(this.$t("common.success"));
-              this.closeServantDetailModal();
+              loading.hide()
+              this.servantModal.model.unshift(res)
+              this.$tip.success(this.$t('common.success'))
+              this.closeServantDetailModal()
             })
             .catch(err => {
-              loading.hide();
-              this.$tip.error(
-                `${this.$t("common.error")}: ${err.err_msg || err.message}`
-              );
-            });
+              loading.hide()
+              this.$tip.error(`${this.$t('common.error')}: ${err.err_msg || err.message}`)
+            })
           // 修改
         } else {
           this.servantDetailModal.model.servant =
-            this.servantDetailModal.model.application +
-            "." +
-            this.servantDetailModal.model.server_name +
-            "." +
-            this.servantDetailModal.model.obj_name;
+            this.servantDetailModal.model.application + '.' + this.servantDetailModal.model.server_name + '.' + this.servantDetailModal.model.obj_name
           this.$ajax
-            .postJSON(
-              "/server/api/update_adapter_conf",
-              this.servantDetailModal.model
-            )
+            .postJSON('/server/api/update_adapter_conf', this.servantDetailModal.model)
             .then(res => {
-              loading.hide();
+              loading.hide()
               this.servantModal.model = this.servantModal.model.map(item => {
                 if (item.id === res.id) {
-                  return res;
+                  return res
                 }
-                return item;
-              });
-              this.$tip.success(this.$t("common.success"));
-              this.closeServantDetailModal();
+                return item
+              })
+              this.$tip.success(this.$t('common.success'))
+              this.closeServantDetailModal()
             })
             .catch(err => {
-              loading.hide();
-              this.$tip.error(
-                `${this.$t("common.error")}: ${err.err_msg || err.message}`
-              );
-            });
+              loading.hide()
+              this.$tip.error(`${this.$t('common.error')}: ${err.err_msg || err.message}`)
+            })
         }
       }
     },
     // 删除 servant
     deleteServant(id) {
-      this.$confirm(
-        this.$t("serverList.servant.a"),
-        this.$t("common.alert")
-      ).then(() => {
-        const loading = this.$Loading.show();
+      this.$confirm(this.$t('serverList.servant.a'), this.$t('common.alert')).then(() => {
+        const loading = this.$Loading.show()
         this.$ajax
-          .getJSON("/server/api/delete_adapter_conf", {
-            id
+          .getJSON('/server/api/delete_adapter_conf', {
+            id,
           })
           .then(res => {
-            loading.hide();
-            this.servantModal.model = this.servantModal.model.filter(
-              item => item.id !== id
-            );
-            this.$tip.success(this.$t("common.success"));
+            loading.hide()
+            this.servantModal.model = this.servantModal.model.filter(item => item.id !== id)
+            this.$tip.success(this.$t('common.success'))
           })
           .catch(err => {
-            loading.hide();
-            this.$tip.error(
-              `${this.$t("common.error")}: ${err.err_msg || err.message}`
-            );
-          });
-      });
+            loading.hide()
+            this.$tip.error(`${this.$t('common.error')}: ${err.err_msg || err.message}`)
+          })
+      })
     },
 
     // 显示更多命令
     showMoreCmd(server) {
       this.moreCmdModal.model = {
-        selected: "setloglevel",
-        setloglevel: "NONE",
-        loadconfig: "",
-        command: "",
-        configs: null
-      };
-      this.moreCmdModal.unwatch = this.$watch(
-        "moreCmdModal.model.selected",
-        () => {
-          if (this.$refs.moreCmdForm) this.$refs.moreCmdForm.resetValid();
-        }
-      );
-      this.moreCmdModal.show = true;
-      this.moreCmdModal.currentServer = server;
+        selected: 'setloglevel',
+        setloglevel: 'NONE',
+        loadconfig: '',
+        command: '',
+        configs: null,
+      }
+      this.moreCmdModal.unwatch = this.$watch('moreCmdModal.model.selected', () => {
+        if (this.$refs.moreCmdForm) this.$refs.moreCmdForm.resetFields()
+      })
+      this.moreCmdModal.show = true
+      this.moreCmdModal.currentServer = server
 
       this.$ajax
-        .getJSON("/server/api/config_file_list", {
+        .getJSON('/server/api/config_file_list', {
           level: 5,
           application: server.application,
-          server_name: server.server_name
+          server_name: server.server_name,
         })
         .then(data => {
-          if (this.moreCmdModal.model) this.moreCmdModal.model.configs = data;
+          if (this.moreCmdModal.model) this.moreCmdModal.model.configs = data
         })
         .catch(err => {
-          this.$tip.error(
-            `${this.$t("common.error")}: ${err.err_msg || err.message}`
-          );
-        });
+          this.$tip.error(`${this.$t('common.error')}: ${err.err_msg || err.message}`)
+        })
     },
     sendCommand(id, command, hold) {
-      const loading = this.$Loading.show();
+      const loading = this.$Loading.show()
       this.$ajax
-        .getJSON("/server/api/send_command", {
+        .getJSON('/server/api/send_command', {
           server_ids: id,
-          command
+          command,
         })
         .then(res => {
-          loading.hide();
-          const msg = res[0].err_msg.replace(/\n/g, "<br>");
+          loading.hide()
+          const msg = res[0].err_msg.replace(/\n/g, '<br>')
           if (res[0].ret_code === 0) {
             const opt = {
-              title: this.$t("common.success"),
-              message: msg
-            };
-            if (hold) opt.duration = 0;
-            this.$tip.success(opt);
+              title: this.$t('common.success'),
+              message: msg,
+            }
+            if (hold) opt.duration = 0
+            this.$tip.success(opt)
           } else {
-            throw new Error(msg);
+            throw new Error(msg)
           }
         })
         .catch(err => {
-          loading.hide();
+          loading.hide()
           this.$tip.error({
-            title: this.$t("common.error"),
-            message: err.err_msg || err.message
-          });
-        });
+            title: this.$t('common.error'),
+            message: err.err_msg || err.message,
+          })
+        })
     },
     invokeMoreCmd() {
-      const model = this.moreCmdModal.model;
-      const server = this.moreCmdModal.currentServer;
+      const model = this.moreCmdModal.model
+      const server = this.moreCmdModal.currentServer
       // 下线服务
-      if (model.selected === "undeploy_tars") {
-        this.undeployServer(server);
+      if (model.selected === 'undeploy_tars') {
+        this.undeployServer(server)
         // 设置日志等级
-      } else if (model.selected === "setloglevel") {
-        this.sendCommand(server.id, `tars.setloglevel ${model.setloglevel}`);
+      } else if (model.selected === 'setloglevel') {
+        this.sendCommand(server.id, `tars.setloglevel ${model.setloglevel}`)
         // push 日志文件
-      } else if (
-        model.selected === "loadconfig" &&
-        this.$refs.moreCmdForm.validate()
-      ) {
-        this.sendCommand(server.id, `tars.loadconfig ${model.loadconfig}`);
+      } else if (model.selected === 'loadconfig' && this.$refs.moreCmdForm.validate()) {
+        this.sendCommand(server.id, `tars.loadconfig ${model.loadconfig}`)
         // 发送自定义命令
-      } else if (
-        model.selected === "command" &&
-        this.$refs.moreCmdForm.validate()
-      ) {
-        this.sendCommand(server.id, model.command);
+      } else if (model.selected === 'command' && this.$refs.moreCmdForm.validate()) {
+        this.sendCommand(server.id, model.command)
         // 查看服务链接
-      } else if (model.selected === "connection") {
-        this.sendCommand(server.id, `tars.connection`, true);
+      } else if (model.selected === 'connection') {
+        this.sendCommand(server.id, `tars.connection`, true)
       }
     },
     closeMoreCmdModal() {
-      if (this.$refs.moreCmdForm) this.$refs.moreCmdForm.resetValid();
-      if (this.moreCmdModal.unwatch) this.moreCmdModal.unwatch();
-      this.moreCmdModal.show = false;
-      this.moreCmdModal.model = null;
+      if (this.$refs.moreCmdForm) this.$refs.moreCmdForm.resetFields()
+      if (this.moreCmdModal.unwatch) this.moreCmdModal.unwatch()
+      this.moreCmdModal.show = false
+      this.moreCmdModal.model = null
     },
 
     // 处理未发布时间显示
-    handleNoPublishedTime(timeStr, noPubTip = this.$t("pub.dlg.unpublished")) {
-      if (timeStr === "0000:00:00 00:00:00") {
-        return noPubTip;
+    handleNoPublishedTime(timeStr, noPubTip = this.$t('pub.dlg.unpublished')) {
+      if (timeStr === '0000:00:00 00:00:00') {
+        return noPubTip
       }
-      return timeStr;
-    }
+      return timeStr
+    },
   },
   created() {
-    this.serverData = this.$parent.getServerData();
+    this.serverData = this.$parent.getServerData()
   },
   mounted() {
-    this.getServerList();
-    this.getServerNotifyList(1);
+    this.getServerList()
+    this.getServerNotifyList(1)
     //同时只更新一个
     if (window.__GET_NOTIFY_TIMER) {
-      clearTimeout(window.__GET_NOTIFY_TIMER);
+      clearTimeout(window.__GET_NOTIFY_TIMER)
     }
-    window.__GET_NOTIFY_TIMER = setInterval(() => {
-      this.getServerNotifyList();
-    }, 1000);
+    // window.__GET_NOTIFY_TIMER = setInterval(() => {
+    //   this.getServerNotifyList();
+    // }, 1000);
   },
   linkDownload(url) {
-    window.open(url, "_blank"); // 新窗口打开外链接
-  }
-};
+    window.open(url, '_blank') // 新窗口打开外链接
+  },
+}
 </script>
 
 <style lang="postcss">
-@import "../../assets/css/variable.css";
+@import '../../assets/css/variable.css';
 
 td .el-link--inner {
   margin-right: 10px;
 }
+
+.server-edit .el-input {
+  width: 300px;
+}
+
 .page_server_manage {
   .tbm16 {
     margin: 16px 0;

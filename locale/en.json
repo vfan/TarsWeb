@@ -21,7 +21,7 @@
     "installNode": "Please install TarsNode first",
     "failed:": "Server deploy failed",
     "sameWithRegistry": "Can not deploy tarslog in same machine with tars framework",
-    "info":"Please deploy tarslog in machine(not tars framework machine)",
+    "info": "Please deploy tarslog in machine(not tars framework machine)",
     "install": "Deploy"
   },
   "releasePackage": {
@@ -691,7 +691,7 @@
     },
     "form": {
       "app": "APP",
-      "appAdd": "Input New App",
+      "appAdd": "Select App or Input New App",
       "tips": "No need to add applications and services, such as MTT.HttpProxyServer.HttpProxyObj, where only fill HttpProxyObj",
       "serviceType": "Service type",
       "serviceName": "Service name",
@@ -769,11 +769,11 @@
     "executeConnect": "Execute connecting test, please wait",
     "executeInstall": "Execute installing, please wait",
     "installTgzNotExists": "Tarnode install file not exits, check file: /usr/local/app/web/files/tarsnode.tgz",
-    "step1":"check package",
-    "step2":"ssh link",
-    "step3":"download package",
-    "step4":"check params",
-    "step5":"install node",
+    "step1": "check package",
+    "step2": "ssh link",
+    "step3": "download package",
+    "step4": "check params",
+    "step5": "install node",
     "table": {
       "th": {
         "node_name": "Node",
@@ -797,7 +797,7 @@
       "invalid": "Can not Install",
       "installing": "Installing"
     }
-  }, 
+  },
   "checkTable": {
     "table": {
       "th": {

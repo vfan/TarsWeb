@@ -124,7 +124,7 @@
                 v-model="configModal.model.bak_flag"
                 :data="[
                   { value: true, text: $t('common.yes') },
-                  { value: false, text: $t('common.no') },
+                  { value: false, text: $t('common.no') }
                 ]"
               >
                 <el-radio :label="true">{{ $t('common.yes') }}</el-radio>
@@ -171,15 +171,15 @@
                 {
                   required: true,
                   message: 'set name is required',
-                  trigger: 'blur',
+                  trigger: 'blur'
                 },
                 {
                   validator: (rule, value, callback) => {
                     if (/^[a-z]+$/.test(value) === false) callback($t('serverList.dlg.errMsg.setName'))
                     return callback()
                   },
-                  trigger: 'blur',
-                },
+                  trigger: 'blur'
+                }
               ]"
               :label="$t('common.set.setName')"
               v-if="configModal.model.enable_set"
@@ -201,15 +201,15 @@
                 {
                   required: true,
                   message: 'set area is required',
-                  trigger: 'blur',
+                  trigger: 'blur'
                 },
                 {
                   validator: (rule, value, callback) => {
                     if (/^[a-z]+$/.test(value) === false) return callback($t('serverList.dlg.errMsg.setArea'))
                     return callback()
                   },
-                  trigger: 'blur',
-                },
+                  trigger: 'blur'
+                }
               ]"
               :label="$t('common.set.setArea')"
               v-if="configModal.model.enable_set"
@@ -233,15 +233,15 @@
                 {
                   required: true,
                   message: 'set group is required',
-                  trigger: 'blur',
+                  trigger: 'blur'
                 },
                 {
                   validator: (rule, value, callback) => {
                     if (/^[0-9\*]+$/.test(value) === false) return callback($t('serverList.dlg.errMsg.setGroup'))
                     return callback()
                   },
-                  trigger: 'blur',
-                },
+                  trigger: 'blur'
+                }
               ]"
               :label="$t('common.set.setGroup')"
               v-if="configModal.model.enable_set"
@@ -269,15 +269,15 @@
                 {
                   required: true,
                   message: 'async threads is required',
-                  trigger: 'blur',
+                  trigger: 'blur'
                 },
                 {
                   validator: (rule, value, callback) => {
                     if (/^[0-9\*]+$/.test(value) === false) return callback($t('serverList.dlg.placeholder.thread'))
                     return callback()
                   },
-                  trigger: 'blur',
-                },
+                  trigger: 'blur'
+                }
               ]"
             >
               <el-input
@@ -407,7 +407,7 @@
             v-model="servantDetailModal.model.protocol"
             :data="[
               { value: 'tars', text: 'TARS' },
-              { value: 'not_tars', text: $t('serverList.servant.notTARS') },
+              { value: 'not_tars', text: $t('serverList.servant.notTARS') }
             ]"
           ></let-radio-group>
         </let-form-item>
@@ -481,7 +481,7 @@ export default {
         server_name: '',
         set_name: '',
         set_area: '',
-        set_group: '',
+        set_group: ''
       },
 
       // 服务列表
@@ -498,19 +498,19 @@ export default {
       serverTypes: ['tars_cpp', 'tars_java', 'tars_php', 'tars_nodejs', 'not_tars', 'tars_go'],
       configModal: {
         show: false,
-        model: null,
+        model: null
       },
 
       // 编辑servant
       servantModal: {
         show: false,
         model: null,
-        currentServer: null,
+        currentServer: null
       },
       servantDetailModal: {
         show: false,
         isNew: true,
-        model: null,
+        model: null
       },
 
       // 更多命令
@@ -518,11 +518,11 @@ export default {
       moreCmdModal: {
         show: false,
         model: null,
-        currentServer: null,
+        currentServer: null
       },
 
       // 失败重试次数
-      failCount: 0,
+      failCount: 0
     }
   },
   computed: {
@@ -534,7 +534,7 @@ export default {
         return false
       }
       return this.checkServantEndpoint(this.servantDetailModal.model.endpoint)
-    },
+    }
   },
   methods: {
     // 获取服务列表
@@ -544,7 +544,7 @@ export default {
 
       this.$ajax
         .getJSON('/server/api/server_list', {
-          tree_node_id: this.$route.params.treeid,
+          tree_node_id: this.$route.params.treeid
         })
         .then(data => {
           loading.close()
@@ -570,14 +570,14 @@ export default {
         .getJSON('/server/api/server_notify_list', {
           tree_node_id: this.$route.params.treeid,
           page_size: this.pageSize,
-          curr_page: curr_page,
+          curr_page: curr_page
         })
         .then(data => {
           loading.hide()
           this.pageNum = curr_page
           this.total = Math.ceil(data.count / this.pageSize)
           this.serverNotifyList = data.rows
-          var that = this
+          // var that = this
         })
         .catch(err => {
           loading.hide()
@@ -608,7 +608,7 @@ export default {
     getServerConfig(id) {
       console.log('this.$refs.configFormLoading', this.$refs)
 
-      let loading = Loading.service({ target: this.$refs.diaglog_serverconfig.$refs.dialog, fullscreen: false })
+      const loading = Loading.service({ target: this.$refs.diaglog_serverconfig.$refs.dialog, fullscreen: false })
       // const loading = this.$loading({
       //   target: this.$refs.configFormLoading,
       //   fullscreen: false,
@@ -616,7 +616,7 @@ export default {
 
       this.$ajax
         .getJSON('/server/api/server', {
-          id,
+          id
         })
         .then(data => {
           loading.close()
@@ -644,12 +644,12 @@ export default {
         if (!valid) {
           return
         }
-        let loading = Loading.service({ target: this.$refs.diaglog_serverconfig.$refs.dialog, fullscreen: false })
+        const loading = Loading.service({ target: this.$refs.diaglog_serverconfig.$refs.dialog, fullscreen: false })
 
         this.$ajax
           .postJSON('/server/api/update_server', {
             isBak: this.configModal.model.bak_flag,
-            ...this.configModal.model,
+            ...this.configModal.model
           })
           .then(res => {
             loading.close()
@@ -680,7 +680,7 @@ export default {
       return new Promise((resolve, reject) => {
         this.$ajax
           .getJSON('/server/api/task', {
-            task_no: taskid,
+            task_no: taskid
           })
           .then(data => {
             // 进行中，1秒后重试
@@ -717,9 +717,9 @@ export default {
           items: [
             {
               server_id: id,
-              command,
-            },
-          ],
+              command
+            }
+          ]
         })
         .then(res => {
           // eslint-disable-line
@@ -730,7 +730,7 @@ export default {
               this.getServerList()
               this.$tip.success({
                 title: tipObj.success,
-                message: info,
+                message: info
               })
             })
             .catch(err => {
@@ -743,7 +743,7 @@ export default {
           this.getServerList()
           this.$tip.error({
             title: tipObj.error,
-            message: err.err_msg || err.message || this.$t('common.networkErr'),
+            message: err.err_msg || err.message || this.$t('common.networkErr')
           })
         })
     },
@@ -751,7 +751,7 @@ export default {
     restartServer(id) {
       this.addTask(id, 'restart', {
         success: this.$t('serverList.restart.success'),
-        error: this.$t('serverList.restart.failed'),
+        error: this.$t('serverList.restart.failed')
       })
     },
     // 停止服务
@@ -759,7 +759,7 @@ export default {
       this.$confirm(this.$t('serverList.stopService.msg.stopService'), this.$t('common.alert')).then(() => {
         this.addTask(id, 'stop', {
           success: this.$t('serverList.restart.success'),
-          error: this.$t('serverList.restart.failed'),
+          error: this.$t('serverList.restart.failed')
         })
       })
     },
@@ -772,7 +772,7 @@ export default {
         this.$confirm(this.$t('serverList.dlg.msg.undeploy'), this.$t('common.alert')).then(() => {
           this.addTask(server.id, 'undeploy_tars', {
             success: this.$t('serverList.undeploy.success'),
-            error: this.$t('serverList.undeploy.failed'),
+            error: this.$t('serverList.undeploy.failed')
           })
           this.closeMoreCmdModal()
         })
@@ -784,12 +784,12 @@ export default {
       this.servantModal.show = true
 
       const loading = this.$loading.show({
-        target: this.$refs.servantModalLoading,
+        target: this.$refs.servantModalLoading
       })
 
       this.$ajax
         .getJSON('/server/api/adapter_conf_list', {
-          id: server.id,
+          id: server.id
         })
         .then(data => {
           loading.hide()
@@ -822,7 +822,7 @@ export default {
         queuetimeout: '60000',
         allow_ip: '',
         protocol: 'not_tars',
-        handlegroup: '',
+        handlegroup: ''
       }
       this.servantDetailModal.isNew = true
       // 编辑
@@ -843,7 +843,7 @@ export default {
     checkServantEndpoint(endpoint) {
       const tmp = endpoint.split(/\s-/)
       const regProtocol = /^tcp|udp|ssl$/i
-      let regIP = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/i
+      const regIP = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/i
       let regHost = /^h\s[^\s]+/i
       let regT = /^t\s([1-9]|[1-9]\d+)$/i
       let regPort = /^p\s\d{2,5}$/i
@@ -936,7 +936,7 @@ export default {
         const loading = this.$Loading.show()
         this.$ajax
           .getJSON('/server/api/delete_adapter_conf', {
-            id,
+            id
           })
           .then(res => {
             loading.hide()
@@ -957,7 +957,7 @@ export default {
         setloglevel: 'NONE',
         loadconfig: '',
         command: '',
-        configs: null,
+        configs: null
       }
       this.moreCmdModal.unwatch = this.$watch('moreCmdModal.model.selected', () => {
         if (this.$refs.moreCmdForm) this.$refs.moreCmdForm.resetFields()
@@ -969,7 +969,7 @@ export default {
         .getJSON('/server/api/config_file_list', {
           level: 5,
           application: server.application,
-          server_name: server.server_name,
+          server_name: server.server_name
         })
         .then(data => {
           if (this.moreCmdModal.model) this.moreCmdModal.model.configs = data
@@ -983,7 +983,7 @@ export default {
       this.$ajax
         .getJSON('/server/api/send_command', {
           server_ids: id,
-          command,
+          command
         })
         .then(res => {
           loading.hide()
@@ -991,7 +991,7 @@ export default {
           if (res[0].ret_code === 0) {
             const opt = {
               title: this.$t('common.success'),
-              message: msg,
+              message: msg
             }
             if (hold) opt.duration = 0
             this.$tip.success(opt)
@@ -1003,7 +1003,7 @@ export default {
           loading.hide()
           this.$tip.error({
             title: this.$t('common.error'),
-            message: err.err_msg || err.message,
+            message: err.err_msg || err.message
           })
         })
     },
@@ -1024,7 +1024,7 @@ export default {
         this.sendCommand(server.id, model.command)
         // 查看服务链接
       } else if (model.selected === 'connection') {
-        this.sendCommand(server.id, `tars.connection`, true)
+        this.sendCommand(server.id, 'tars.connection', true)
       }
     },
     closeMoreCmdModal() {
@@ -1040,7 +1040,7 @@ export default {
         return noPubTip
       }
       return timeStr
-    },
+    }
   },
   created() {
     this.serverData = this.$parent.getServerData()
@@ -1048,7 +1048,7 @@ export default {
   mounted() {
     this.getServerList()
     this.getServerNotifyList(1)
-    //同时只更新一个
+    // 同时只更新一个
     if (window.__GET_NOTIFY_TIMER) {
       clearTimeout(window.__GET_NOTIFY_TIMER)
     }
@@ -1058,7 +1058,7 @@ export default {
   },
   linkDownload(url) {
     window.open(url, '_blank') // 新窗口打开外链接
-  },
+  }
 }
 </script>
 

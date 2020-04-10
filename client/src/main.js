@@ -14,27 +14,27 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import Vue from "vue";
-import "./plugins/ui";
-import "./plugins/ajax";
+import Vue from 'vue'
+import './plugins/ui'
+import './plugins/ajax'
 // import './plugins/charts';
 
-import App from "./App";
-import router from "./router";
-import { i18n, loadLang } from "./locale/i18n";
-import "./style/element-variables.scss";
+import App from './App'
+import router from './router'
+import { i18n, loadLang } from './locale/i18n'
+import './style/element-variables.scss'
 
-import "./assets/icon-font/iconfont.css";
+import './assets/icon-font/iconfont.css'
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 loadLang.call(this).then(() => {
   new Vue({
     i18n: i18n,
-    el: "#app",
+    el: '#app',
     router,
     components: { App },
-    template: "<App/>"
-  });
-});
+    template: '<App/>'
+  })
+})

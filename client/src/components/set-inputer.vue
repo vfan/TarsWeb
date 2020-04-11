@@ -1,7 +1,7 @@
 <template>
   <div class="set_inputer">
     <div class="set_inputer_item">
-      <let-input
+      <el-input
         ref="name"
         size="small"
         :value="name"
@@ -12,10 +12,10 @@
         :required-tip="$t('deployService.form.setNameFormatTips')"
         :pattern="enabled ? '^[a-z]+$' : null"
         :pattern-tip="$t('deployService.form.setNameFormatTips')"
-      ></let-input>
+      ></el-input>
     </div>
     <div class="set_inputer_item">
-      <let-input
+      <el-input
         ref="area"
         size="small"
         :value="area"
@@ -26,10 +26,10 @@
         :required-tip="$t('deployService.form.setAreaTips')"
         :pattern="enabled ? '^[a-z]+$' : null"
         :pattern-tip="$t('deployService.form.setAreaFormatTips')"
-      ></let-input>
+      ></el-input>
     </div>
     <div class="set_inputer_item">
-      <let-input
+      <el-input
         ref="group"
         size="small"
         :value="group"
@@ -40,72 +40,68 @@
         :required-tip="$t('deployService.form.setGroupTips')"
         :pattern="enabled ? '^(\\d+|\\*)$' : null"
         :pattern-tip="$t('deployService.form.setGroupFormatTips')"
-      ></let-input>
+      ></el-input>
     </div>
-    <let-checkbox
-      class="set_inputer_switch"
-      :value="enabled"
-      @input="updaters.enabled"
-      @change="onEnabledChange"
-    >{{$t('serverList.table.th.enableSet')}}
-    </let-checkbox>
+    <el-checkbox class="set_inputer_switch" :value="enabled" @input="updaters.enabled" @change="onEnabledChange"
+      >{{ $t('serverList.table.th.enableSet') }}
+    </el-checkbox>
   </div>
 </template>
 
 <script>
-  export default {
-    props: {
-      enabled: Boolean,
-      name: String,
-      area: String,
-      group: [Number, String],
+export default {
+  props: {
+    enabled: Boolean,
+    name: String,
+    area: String,
+    group: [Number, String]
+  },
+
+  created() {
+    this.updaters = {
+      name: this.updater('name'),
+      area: this.updater('area'),
+      group: this.updater('group'),
+      enabled: this.updater('enabled')
+    }
+  },
+
+  methods: {
+    updater(name) {
+      return value => this.$emit(`update:${name}`, value)
     },
+    onEnabledChange() {
+      this.$nextTick(() => {
+        if (!this.enabled) {
+          this.updaters.name('')
+          // this.$refs.name.resetValid()
 
-    created() {
-      this.updaters = {
-        name: this.updater('name'),
-        area: this.updater('area'),
-        group: this.updater('group'),
-        enabled: this.updater('enabled'),
-      };
-    },
+          this.updaters.area('')
+          // this.$refs.area.resetValid()
 
-    methods: {
-      updater(name) {
-        return value => this.$emit(`update:${name}`, value);
-      },
-      onEnabledChange() {
-        this.$nextTick(() => {
-          if (!this.enabled) {
-            this.updaters.name('');
-            this.$refs.name.resetValid();
-
-            this.updaters.area('');
-            this.$refs.area.resetValid();
-
-            this.updaters.group('');
-            this.$refs.group.resetValid();
-          }
-        });
-      },
-    },
-  };
+          this.updaters.group('')
+          // this.$refs.group.resetValid()
+        }
+      })
+    }
+  }
+}
 </script>
 
 <style>
-  .set_inputer {
+.set_inputer_item .el-input {
+  width: 126px !important;
+}
 
-  &
-  _item {
+.set_inputer {
+  & _item {
     float: left;
     margin-right: 8px;
     width: 126px;
   }
 
-  &
-  _switch {
+  & _switch {
     float: right;
   }
-
-  }
+}
 </style>

@@ -3,7 +3,7 @@ module.exports = {
     browser: true,
     es6: true
   },
-  extends: ['plugin:vue/essential', 'standard'],
+  extends: ['plugin:vue/essential', 'plugin:prettier/recommended', 'standard'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly'
@@ -14,6 +14,7 @@ module.exports = {
   },
   plugins: ['vue'],
   rules: {
+    'vue/html-self-closing': 'off',
     camelcase: 'off',
     eqeqeq: 'off',
     'space-before-function-paren': 'off'

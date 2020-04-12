@@ -397,7 +397,7 @@ export default {
     this.$ajax
       .getJSON('/server/api/node_list')
       .then(data => {
-        console.log(data)
+        // console.log(data)
         this.model.nodeList = data
       })
       .catch(err => {
@@ -453,7 +453,7 @@ export default {
 
   methods: {
     handleSelect(item) {
-      console.log(item)
+      // console.log(item)
     },
     queryApplicationLists(queryString, cb) {
       var applicationList = this.model.applicationList
@@ -526,7 +526,7 @@ export default {
           // loading.close()
           this.isLoadingPort = false
           data.forEach((node, index) => {
-            console.log('index', index, node)
+            // console.log('index', index, node)
             this.$set(adapters[index], 'port', String(node.port || ''))
           })
         })
@@ -537,17 +537,6 @@ export default {
         })
     },
     save() {
-      console.log('save', this.model)
-
-      // return
-      // var application = document.querySelector('#inputApplication .let-select__filter__input').value.trim()
-
-      // if (this.model.application == '') {
-      //   // this.model.application = application
-      //   return
-      // }
-
-      // this.$message.error(this.$t('deployService.form.nameTips'))
       this.$refs.formvue.validate((valid, validObjs) => {
         if (!valid) {
           return false

@@ -30,3 +30,26 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
   font-weight: bold;
   padding-bottom: 0px !important;
 }
+.el-input input {
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+
+.el-table th > .cell {
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+}
+
+.el-table td > .cell {
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+}
+.el-radio {
+  margin-right: 15px !important;
+}
+
+.el-table th span.required:after {
+  color: #f56c6c;
+  content: '*';
+  margin-left: 4px;
+}

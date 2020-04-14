@@ -20,7 +20,8 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
 .el-input,
 .el-textarea,
 .el-radio,
-.el-form {
+.el-form,
+.el-step__title {
   font-size: 12px !important;
 }
 
